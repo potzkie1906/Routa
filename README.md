@@ -10,33 +10,35 @@ Users can search for routes between two places and view important information su
 
 ## Guide Questions:
 
--What problem are you addressing? 
+- What problem are you addressing? 
 
-Routa addresses this problem by providing transportation information in one
-centralized system where users can easily search for routes, view stops on a map, and
-check available transportation details.
+  Routa addresses this problem by providing transportation information in one
+  centralized system where users can easily search for routes, view stops on a map, and
+  check available transportation details.
 
--Who experiences the problem?
+- Who experiences the problem?
 
-Mostly Students and Other commuters new to the area
+  Mostly Students and Other commuters new to the area
 
--Why is it important to solve?
-It is important to solve this problem because students and other commuters may have difficulty finding reliable and organized transportation information. Routa provides route details, stops, fares, and operating hours in one centralized system, making transportation information easier to access and understand. 
+- Why is it important to solve?
+
+  It is important to solve this problem because students and other commuters may have difficulty finding reliable     and organized transportation information. Routa provides route details, stops, fares, and operating hours in one     centralized system, making transportation information easier to access and understand. 
 
 
 ## Project Objectives
--General Objective
-To develop a Java-based application that will allow users to view transportation routes and stops using an interactive map. 	
+ **General Objective**
+ 
+ To develop a Java-based application that will allow users to view transportation routes and stops using an interactive map. 	
 
--Specific Objectives
+**Specific Objectives**
 The project aims to:
 
--To allow users to search and view available transportation routes.
--To display transportation stops and routes through an interactive map.
--To provide users with information about fares and operating hours.
--To allow users to save their favorite transportation routes.
--To apply Java Object-Oriented Programming concepts in developing the system.
--To provide administrators with a way to manage transportation information.
+- To allow users to search and view available transportation routes.
+- To display transportation stops and routes through an interactive map.
+- To provide users with information about fares and operating hours.
+- To allow users to save their favorite transportation routes.
+- To apply Java Object-Oriented Programming concepts in developing the system.
+- To provide administrators with a way to manage transportation information.
 
 ## Target Users
 - **Commuters:** view and search routes, save favorites, read alerts, report wrong information.
@@ -224,7 +226,10 @@ a mobile app, public transportation API integration, and separate admin screens 
 ## Team Members and Roles
 | Name | Role |
 |---|---|
-| _TODO_ | _TODO_ |
+| Rodrigo B. Alderite Jr. | Backend Developer |
+| Red Zildjian C. Sepillo | Frontend Developer |
+| Kirk Em Neo M. Legaspi | Frontend Developer and Data Gathering |
+| Karl Vincent C. Samonte | Data Gathering |
 
 ## GitHub Workflow
 Branches:
@@ -256,6 +261,6 @@ docs: update README setup steps
 |---|---|---|---|
 | 1 | 25-03341 | Rodrigo B. Alderite Jr. | potzkie1906 |
 | 2 | 25-00846 | Red Zildjian C. Sepillo | zildpula |
-| 3 | 25-05723 | Kirk Em Neo M. Legasi | KirkEmNeo15 |
-| 4 | 25-04055 | Samonte, Karl Vincent C. | karlvincentsamonte |
+| 3 | 25-05723 | Kirk Em Neo M. Legaspi | KirkEmNeo15 |
+| 4 | 25-04055 | Karl Vincent C. Samonte | karlvincentsamonte |
 
