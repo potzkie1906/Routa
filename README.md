@@ -31,6 +31,7 @@ Users can search for routes between two places and view important information su
  To develop a Java-based application that will allow users to view transportation routes and stops using an interactive map. 	
 
 **Specific Objectives**
+
 The project aims to:
 
 - To allow users to search and view available transportation routes.
