@@ -1,32 +1,45 @@
-# TransitHub: Transportation Management and Route Mapping System
+# Routa
 
 > **Demo data notice:** All routes, stops, fares, schedules, vehicles and drivers in this project are
 > fictional sample data for a school project. They are **not** official transportation
-> information. TransitHub does **not** provide live GPS tracking, traffic or arrival times.
+> information. Routa does **not** provide live GPS tracking, traffic or arrival times.
 
 ## Project Description
-TransitHub is a full-stack web application where commuters can explore public transportation
-routes (bus, jeepney and van) on an interactive map, search for routes between two places,
-and view stops, fares and operating hours. Administrators manage routes, stops, transportation,
-alerts and users. The sample data is set around Lipa City and Batangas City.
+Routa is a full-stack web application that helps commuters explore public transportation routes such as buses, jeepneys, and vans through an interactive map.
+Users can search for routes between two places and view important information such as stops, fares, and operating hours. Administrators can manage routes, stops, transportation information, and alerts through the system.
 
-The backend is written in Java with Spring Boot and is designed to show the four OOP principles
-(abstraction, encapsulation, inheritance and polymorphism) in a real, working system.
+## Guide Questions:
 
-## Problem Being Addressed
-_TODO (team): describe the commuter problem in your own words, for example that route information is
-scattered, outdated, or hard to find, and what your system changes for commuters and administrators._
+-What problem are you addressing? 
+
+Routa addresses this problem by providing transportation information in one
+centralized system where users can easily search for routes, view stops on a map, and
+check available transportation details.
+
+-Who experiences the problem?
+
+Mostly Students and Other commuters new to the area
+
+-Why is it important to solve?
+It is important to solve this problem because students and other commuters may have difficulty finding reliable and organized transportation information. Routa provides route details, stops, fares, and operating hours in one centralized system, making transportation information easier to access and understand. 
+
 
 ## Project Objectives
-- Build a Java (Spring Boot) application that demonstrates abstraction, encapsulation, inheritance and polymorphism.
-- Let users view routes and stops on an OpenStreetMap-based map.
-- Let users search for routes by origin and destination.
-- Let administrators keep route information up to date.
-- Keep secrets out of Git and label all sample data as fictional.
+-General Objective
+To develop a Java-based application that will allow users to view transportation routes and stops using an interactive map. 	
+
+-Specific Objectives
+The project aims to:
+
+-To allow users to search and view available transportation routes.
+-To display transportation stops and routes through an interactive map.
+-To provide users with information about fares and operating hours.
+-To allow users to save their favorite transportation routes.
+-To apply Java Object-Oriented Programming concepts in developing the system.
+-To provide administrators with a way to manage transportation information.
 
 ## Target Users
 - **Commuters:** view and search routes, save favorites, read alerts, report wrong information.
-- **Administrators:** manage routes, stops, transportation, alerts, users and commuter reports.
 
 ## Main Features
 
@@ -43,11 +56,6 @@ scattered, outdated, or hard to find, and what your system changes for commuters
 - Report wrong or outdated route information
 - Profile page
 
-**For administrators (`/admin`)**
-- Dashboard with totals and charts
-- Add, edit, delete and change the status of routes (with ordered stops, fare and schedules)
-- Manage stops, transportation (bus, jeepney, van) and alerts
-- Change user roles, disable or enable accounts, and review commuter reports
 
 ## Technologies Used
 | Layer | Technology |
@@ -57,7 +65,7 @@ scattered, outdated, or hard to find, and what your system changes for commuters
 | Database | PostgreSQL (run with Docker Compose) |
 | Map | Leaflet + OpenStreetMap tiles |
 | Testing | JUnit 5 and Spring Boot Test (backend), Vitest and React Testing Library (frontend) |
-| Tools | Git, GitHub, Docker Compose, VS Code / IntelliJ IDEA |
+| Tools | Git, GitHub, Docker Compose, VS Code |
 
 ## Project Structure
 ```
@@ -244,4 +252,10 @@ docs: update README setup steps
 ```
 
 ## Contributors
-_TODO_
+| No. | SR-Code | Name | GitHub Username |
+|---|---|---|---|
+| 1 | 25-03341 | Rodrigo B. Alderite Jr. | potzkie1906 |
+| 2 | 25-00846 | Red Zildjian C. Sepillo | zildpula |
+| 3 | 25-05723 | Kirk Em Neo M. Legasi | KirkEmNeo15 |
+| 4 | 25-04055 | Samonte, Karl Vincent C. | karlvincentsamonte |
+
