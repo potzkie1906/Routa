@@ -1,45 +1,24 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import type { LatLngTuple } from 'leaflet'
-import {
-  CircleMarker,
-  MapContainer,
-  Marker,
-  Polyline,
-  Popup,
-  TileLayer,
-  Tooltip,
-  useMap,
-  useMapEvents,
-} from 'react-leaflet'
+import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { Route } from '../types/Route'
 import type { Stop } from '../types/Stop'
-import type { PickMode, TripPoint } from '../types/Trip'
-import { destinationIcon, originIcon } from '../utils/mapIcons'
 import { colorForType } from '../utils/transportColors'
-import RouteSummary from './RouteSummary'
 import StopMarker from './StopMarker'
-
-export interface FlyTarget {
-  latitude: number
-  longitude: number
-}
 
 interface MapViewProps {
   routes: Route[] // the routes to draw
-  allRoutes: Route[] // every route, used by the stop popups
   stops: Stop[] // the stops to draw
   selectedRoute: Route | null
+  selectedStopId: number | null // the tapped stop or terminal
   // routes found by a search (the others are dimmed); null when no search is active
   highlightedRouteIds: Set<number> | null
-  onSelectRoute: (routeId: number) => void
   focusBounds: LatLngTuple[] | null // the map zooms to show these points
-  flyTarget: FlyTarget | null // the map moves to this point
-  origin: TripPoint | null
-  destination: TripPoint | null
-  pickMode: PickMode | null
-  onPick: (mode: PickMode, latitude: number, longitude: number) => void
-  onStopAsTripPoint: (mode: PickMode, stop: Stop) => void
+  tapPoint: LatLngTuple | null // where the user tapped a road (a small ring is drawn there)
+  roadLines: Map<number, LatLngTuple[]> // route id -> line along the roads, for the routes in the info card
+  onMapTap: (latitude: number, longitude: number, zoom: number) => void
+  onStopTap: (stop: Stop) => void
 }
 
 const DEFAULT_CENTER: LatLngTuple = [13.94, 121.16] // Lipa City
@@ -56,24 +35,11 @@ function FitBounds({ bounds }: { bounds: LatLngTuple[] | null }) {
   return null
 }
 
-/** Moves the map to a point (used when the user clicks a nearby stop in the side panel). */
-function FlyTo({ target }: { target: FlyTarget | null }) {
-  const map = useMap()
-  useEffect(() => {
-    if (target) {
-      map.flyTo([target.latitude, target.longitude], 16)
-    }
-  }, [map, target])
-  return null
-}
-
-/** While the user is choosing an origin or destination, a click on the map picks that point. */
-function PickHandler({ mode, onPick }: { mode: PickMode | null; onPick: MapViewProps['onPick'] }) {
-  useMapEvents({
+/** A tap anywhere on the map (also on a route line) is reported with its position and the zoom. */
+function TapHandler({ onTap }: { onTap: MapViewProps['onMapTap'] }) {
+  const map = useMapEvents({
     click(event) {
-      if (mode) {
-        onPick(mode, event.latlng.lat, event.latlng.lng)
-      }
+      onTap(event.latlng.lat, event.latlng.lng, map.getZoom())
     },
   })
   return null
@@ -81,18 +47,15 @@ function PickHandler({ mode, onPick }: { mode: PickMode | null; onPick: MapViewP
 
 export default function MapView({
   routes,
-  allRoutes,
   stops,
   selectedRoute,
+  selectedStopId,
   highlightedRouteIds,
-  onSelectRoute,
   focusBounds,
-  flyTarget,
-  origin,
-  destination,
-  pickMode,
-  onPick,
-  onStopAsTripPoint,
+  tapPoint,
+  roadLines,
+  onMapTap,
+  onStopTap,
 }: MapViewProps) {
   // Drawing order: dimmed routes first, then search results, and the selected route last (on top).
   const importance = (route: Route) =>
@@ -106,10 +69,9 @@ export default function MapView({
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <FitBounds bounds={focusBounds} />
-      <FlyTo target={flyTarget} />
-      <PickHandler mode={pickMode} onPick={onPick} />
+      <TapHandler onTap={onMapTap} />
 
-      {/* route lines */}
+      {/* route lines (a tap on a line reaches TapHandler, which finds every route there) */}
       {drawOrder
         .filter((route) => route.path.length >= 2)
         .map((route) => {
@@ -126,15 +88,29 @@ export default function MapView({
                 // inactive and suspended routes are dashed
                 dashArray: route.status === 'ACTIVE' ? undefined : '8 10',
               }}
-              eventHandlers={{ click: () => onSelectRoute(route.id) }}
             >
               <Tooltip sticky>{route.routeName}</Tooltip>
-              <Popup maxWidth={340}>
-                <RouteSummary route={route} />
-              </Popup>
             </Polyline>
           )
         })}
+
+        {/* the tapped routes along the real roads: a white casing under a bright line, drawn on top */}
+          {routes
+            .filter((route) => roadLines.has(route.id))
+            .map((route) => {
+              const line = roadLines.get(route.id) ?? []
+              return (
+                <Fragment key={`road-${route.id}`}>
+                  <Polyline positions={line} interactive={false} pathOptions={{ color: '#ffffff', weight: 10, opacity: 0.9, lineCap: 'round' }} />
+                  <Polyline
+                    positions={line}
+                    interactive={false}
+                    pathOptions={{ color: colorForType(route.transportation.type), weight: 6, opacity: 1, lineCap: 'round' }}
+                  />
+                </Fragment>
+              )
+            })
+          }
 
       {/* start and end of the selected route */}
       {selectedRoute && selectedRoute.stops.length >= 2 && (
@@ -157,27 +133,20 @@ export default function MapView({
         </>
       )}
 
-      {/* stops */}
-      {stops.map((stop) => (
-        <StopMarker
-          key={stop.id}
-          stop={stop}
-          routes={allRoutes.filter((route) => route.stops.some((routeStop) => routeStop.stop.id === stop.id))}
-          onUseAsTripPoint={onStopAsTripPoint}
+      {/* where the user tapped a road */}
+      {tapPoint && (
+        <CircleMarker
+          center={tapPoint}
+          radius={9}
+          pathOptions={{ color: '#ffffff', weight: 2, fillColor: '#2563eb', fillOpacity: 0.6 }}
+          interactive={false}
         />
-      ))}
+      )}
 
-      {/* the user's origin and destination */}
-      {origin && (
-        <Marker position={[origin.latitude, origin.longitude]} icon={originIcon}>
-          <Tooltip>Origin: {origin.label}</Tooltip>
-        </Marker>
-      )}
-      {destination && (
-        <Marker position={[destination.latitude, destination.longitude]} icon={destinationIcon}>
-          <Tooltip>Destination: {destination.label}</Tooltip>
-        </Marker>
-      )}
+      {/* stops and terminals */}
+      {stops.map((stop) => (
+        <StopMarker key={stop.id} stop={stop} selected={stop.id === selectedStopId} onTap={onStopTap} />
+      ))}
     </MapContainer>
   )
 }
