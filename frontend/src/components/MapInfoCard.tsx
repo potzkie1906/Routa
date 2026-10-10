@@ -6,12 +6,13 @@ import TypeBadge from './TypeBadge'
 
 interface MapInfoCardProps {
   info: TapInfo
+  status?: string // a short note, for example while the road lines load
   onClose: () => void
   onShowRoute: (routeId: number) => void // highlight the route on the map
 }
 
 /** The card that answers a tap: routes on a road, or trips from a terminal or stop. */
-export default function MapInfoCard({ info, onClose, onShowRoute }: MapInfoCardProps) {
+export default function MapInfoCard({ info, status, onClose, onShowRoute }: MapInfoCardProps) {
   const title = info.kind === 'road' ? 'Routes on this road' : info.stop.name
   const subtitle =
     info.kind === 'road'
@@ -24,6 +25,7 @@ export default function MapInfoCard({ info, onClose, onShowRoute }: MapInfoCardP
         <div className="min-w-0 flex-1">
           <h2 className="font-semibold">{title}</h2>
           <p className="text-xs text-slate-500">{subtitle}</p>
+          {status && <p className="mt-0.5 text-xs text-primary">{status}</p>}
         </div>
         <button type="button" onClick={onClose} aria-label="Close" className="rounded px-2 text-xl leading-none text-slate-500 hover:bg-slate-100">
           &times;
@@ -33,7 +35,7 @@ export default function MapInfoCard({ info, onClose, onShowRoute }: MapInfoCardP
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {/* ---------- a road was tapped ---------- */}
         {info.kind === 'road' && info.matches.length === 0 && (
-          <p className="text-sm text-slate-600">No TransitHub route passes here. Tap closer to a colored line.</p>
+          <p className="text-sm text-slate-600">No route passes here. Tap closer to a colored line.</p>
         )}
         {info.kind === 'road' &&
           info.matches.map(({ route }) => (
@@ -94,7 +96,7 @@ export default function MapInfoCard({ info, onClose, onShowRoute }: MapInfoCardP
           ))}
 
         <p className="text-[11px] leading-relaxed text-slate-500">
-          Fare = the fare for the whole route (the app does not price part of a route). Times are estimates. Demo data.
+          Fare = the fare for the whole route (the app does not price part of a route). Times are estimates. Road lines: OSRM, OpenStreetMap data. Demo data.
         </p>
         <Link to="/routes" className="text-sm font-semibold text-primary hover:underline">
           Browse all routes

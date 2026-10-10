@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import type { LatLngTuple } from 'leaflet'
 import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -16,6 +16,7 @@ interface MapViewProps {
   highlightedRouteIds: Set<number> | null
   focusBounds: LatLngTuple[] | null // the map zooms to show these points
   tapPoint: LatLngTuple | null // where the user tapped a road (a small ring is drawn there)
+  roadLines: Map<number, LatLngTuple[]> // route id -> line along the roads, for the routes in the info card
   onMapTap: (latitude: number, longitude: number, zoom: number) => void
   onStopTap: (stop: Stop) => void
 }
@@ -52,6 +53,7 @@ export default function MapView({
   highlightedRouteIds,
   focusBounds,
   tapPoint,
+  roadLines,
   onMapTap,
   onStopTap,
 }: MapViewProps) {
@@ -91,6 +93,24 @@ export default function MapView({
             </Polyline>
           )
         })}
+
+        {/* the tapped routes along the real roads: a white casing under a bright line, drawn on top */}
+          {routes
+            .filter((route) => roadLines.has(route.id))
+            .map((route) => {
+              const line = roadLines.get(route.id) ?? []
+              return (
+                <Fragment key={`road-${route.id}`}>
+                  <Polyline positions={line} interactive={false} pathOptions={{ color: '#ffffff', weight: 10, opacity: 0.9, lineCap: 'round' }} />
+                  <Polyline
+                    positions={line}
+                    interactive={false}
+                    pathOptions={{ color: colorForType(route.transportation.type), weight: 6, opacity: 1, lineCap: 'round' }}
+                  />
+                </Fragment>
+              )
+            })
+          }
 
       {/* start and end of the selected route */}
       {selectedRoute && selectedRoute.stops.length >= 2 && (

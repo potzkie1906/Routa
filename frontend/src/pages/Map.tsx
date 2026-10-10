@@ -10,6 +10,7 @@ import MapView from '../components/MapView'
 import RouteSearch from '../components/RouteSearch'
 import RouteSummary from '../components/RouteSummary'
 import { useApiData } from '../hooks/useApiData'
+import {useRoadLines} from '../hooks/useRoadLines'
 import { getRoutes, searchRoutes } from '../services/routeService'
 import { getStops } from '../services/stopService'
 import type { Route } from '../types/Route'
@@ -115,6 +116,13 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
     const matches = routesNearPoint(visibleRoutes, latitude, longitude, tapToleranceMeters(zoom, latitude))
     setTapInfo({ kind: 'road', latitude, longitude, matches })
   }
+    // ----- road lines for the routes in the card -----
+  // the routes the card is about (useMemo keeps the same array until the next tap)
+  const tappedRoutes = useMemo<Route[]>(() => {
+    if (!tapInfo) return []
+    return tapInfo.kind === 'road' ? tapInfo.matches.map((match) => match.route) : tapInfo.trips.map((trip) => trip.route)
+  }, [tapInfo])
+  const roadLines = useRoadLines(tappedRoutes)
   // ----- loading and errors -----
   if (routesData.state.status === 'loading' || stopsData.state.status === 'loading') {
     return <LoadingSpinner label="Loading the map data..." />
@@ -251,13 +259,19 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
               highlightedRouteIds={highlightedIds}
               focusBounds={focusBounds}
               tapPoint={tapInfo?.kind === 'road' ? [tapInfo.latitude, tapInfo.longitude] : null}
+              roadLines={roadLines.lines}
               onMapTap={handleMapTap}
               onStopTap={handleStopTap}
             />
-          
+              
             {tapInfo && (
               <div className="absolute inset-x-3 bottom-3 z-[1000] flex max-h-[70%] sm:inset-x-auto sm:bottom-auto sm:right-3 sm:top-3 sm:max-h-[calc(100%-24px)] sm:w-[320px]">
-                <MapInfoCard info={tapInfo} onClose={() => setTapInfo(null)} onShowRoute={setSelectedRouteId} />
+                <MapInfoCard 
+                  info={tapInfo} 
+                  status={roadLines.loading ? 'Drawing the road lines...' : undefined}
+                  onClose={() => setTapInfo(null)} 
+                  onShowRoute={setSelectedRouteId} 
+                />
               </div>
             )}
           </div>
