@@ -1,48 +1,26 @@
 # Routa
 
-> **Demo data notice:** All routes, stops, fares, schedules, vehicles and drivers in this project are
-> fictional sample data for a school project. They are **not** official transportation
-> information. Routa does **not** provide live GPS tracking, traffic or arrival times.
-
 ## Project Description
-Routa is a full-stack web application that helps commuters explore public transportation routes such as buses, jeepneys, and vans through an interactive map.
-Users can search for routes between two places and view important information such as stops, fares, and operating hours. Administrators can manage routes, stops, transportation information, and alerts through the system.
-
-## Guide Questions:
-
-- What problem are you addressing? 
-
-  Routa addresses this problem by providing transportation information in one
-  centralized system where users can easily search for routes, view stops on a map, and
-  check available transportation details.
-
-- Who experiences the problem?
-
-  Mostly Students and Other commuters new to the area
-
-- Why is it important to solve?
-
-  It is important to solve this problem because students and other commuters may have difficulty finding reliable     and organized transportation information. Routa provides route details, stops, fares, and operating hours in one     centralized system, making transportation information easier to access and understand. 
-
+Routa is a web application designed to help commuters, especially students and people unfamiliar with Batangas City, find public transportation information more easily. Through an interactive map, users can explore jeepney, bus, and van routes, search for direct routes between two places, and view transportation stops, fares, and operating hours. The system also allows registered users to save their favorite routes and report incorrect or outdated information, while administrators can manage transportation routes, stops, and service alerts.
 
 ## Project Objectives
  **General Objective**
  
- To develop a Java-based application that will allow users to view transportation routes and stops using an interactive map. 	
+To develop a web-based transportation information system using Java Spring Boot for the backend and React for the frontend, allowing commuters in Batangas City to explore transportation routes through an interactive map, search for direct routes between two places, and view available transportation information.
 
 **Specific Objectives**
 
 The project aims to:
 
-- To allow users to search and view available transportation routes.
-- To display transportation stops and routes through an interactive map.
-- To provide users with information about fares and operating hours.
-- To allow users to save their favorite transportation routes.
-- To apply Java Object-Oriented Programming concepts in developing the system.
-- To provide administrators with a way to manage transportation information.
+- Allow users to search for and view available transportation routes.
+- Display transportation routes and stops through an interactive map.
+- Provide users with information about transportation fares and operating hours.
+- Allow registered users to save their favorite transportation routes.
+- Apply Java Object-Oriented Programming concepts in developing the system.
+- Provide administrators with tools to manage transportation information and service alerts.
 
 ## Target Users
-- **Commuters:** view and search routes, save favorites, read alerts, report wrong information.
+- **Commuters:** view and search available jeepney, bus, and van routes, save favorites, read alerts, report wrong information.
 
 ## Main Features
 
@@ -211,26 +189,35 @@ _Placeholders: replace with real screenshots (save them in `docs/screenshots/`).
 | Admin route form | `docs/screenshots/admin-route-form.png` |
 
 ## Known Limitations
-- Sample data only; not official transportation information.
-- Routes are stored coordinates: no live GPS, traffic or arrival times.
-- Route search finds **direct** routes only (no transfers). A place matches when a stop name contains the text you typed.
-- Vehicles, drivers, schedules and fares have no separate admin screens: schedules and fares are edited inside the
-  route form, vehicles and drivers come from the sample data.
-- The login token is kept in the browser's `localStorage`. This is simple for a school project but is not the safest
-  option against cross-site scripting (an httpOnly cookie would be, but it needs extra CSRF protection).
-- Map tiles need an internet connection (OpenStreetMap).
+The current version of Routa has the following limitations:
 
+- Limited Geographic Coverage – The system focuses on Batangas City and does not yet cover other cities or municipalities.
+- No Live GPS Tracking – The system displays routes using coordinates stored in the database but does not track the real-time locations of vehicles.
+- No Real-Time Traffic or Arrival Information – The application does not provide live traffic updates or real-time estimated arrival times.
+- Dependence on Stored Information – The accuracy of displayed route details, stops, fares, and operating hours depends on the information available in the database.
+- Internet Requirement for Maps – An internet connection is required to load map tiles from OpenStreetMap.
+- Because of these limitations, Routa should be used as a school project demonstration and not as an official source of transportation information.
+  
 ## Future Improvements
-Real-time GPS tracking, traffic information, estimated arrival times, route optimization with transfers,
-a mobile app, public transportation API integration, and separate admin screens for vehicles and drivers.
+Routa can be improved in future versions to provide commuters with more complete and convenient transportation information. Possible improvements include:
 
+- Expanded Coverage – Extend the system to include transportation routes in other cities and municipalities beyond Batangas City.
+- Multi-Route Search – Support routes with transfers so users can find alternative ways to reach their destinations.
+- Real-Time Vehicle Tracking – Integrate GPS technology to display vehicle locations and provide more accurate arrival estimates.
+- Traffic and Travel Updates – Include traffic conditions and estimated travel times to help commuters plan their trips.
+- Improved Transportation Management – Add dedicated administration pages for managing vehicles, drivers, schedules, and fares
+- Enhanced Security – Improve authentication and session management to provide stronger protection for user accounts.
+- Offline Route Information – Explore options for allowing users to access saved route details when an internet connection is unavailable.
+- Better Route Recommendations – Suggest alternative routes based on destination, fare, and estimated travel time.
+- These improvements may be considered for future development depending on the project's resources, requirements, and available data.
+  
 ## Team Members and Roles
 | Name | Role |
 |---|---|
-| Rodrigo B. Alderite Jr. | Backend Developer |
-| Red Zildjian C. Sepillo | Frontend Developer |
-| Kirk Em Neo M. Legaspi | Frontend Developer and Data Gathering |
-| Karl Vincent C. Samonte | Data Gathering |
+| Rodrigo B. Alderite Jr. | Backend Developer – Develops the Spring Boot API for route management, fares, authentication, and error handling. |
+| Red Zildjian C. Sepillo | Frontend Developer – Develops the React pages, route cards, and interactive map interface. |
+| Kirk Em Neo M. Legaspi | Frontend Developer and Data Gathering – Assists with frontend and map development and gathers transportation route data for Batangas City. |
+| Karl Vincent C. Samonte | Database and Data Gathering – Designs the PostgreSQL database tables and prepares scripts for loading transportation data. |
 
 ## GitHub Workflow
 Branches:
@@ -264,4 +251,3 @@ docs: update README setup steps
 | 2 | 25-00846 | Red Zildjian C. Sepillo | zildpula |
 | 3 | 25-05723 | Kirk Em Neo M. Legaspi | KirkEmNeo15 |
 | 4 | 25-04055 | Karl Vincent C. Samonte | karlvincentsamonte |
-
