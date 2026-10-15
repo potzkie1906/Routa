@@ -1,30 +1,12 @@
 # Routa
 
-> **Demo data notice:** All routes, stops, fares, schedules, vehicles and drivers in this project are
-> fictional sample data for a school project. They are **not** official transportation
-> information. Routa does **not** provide live GPS tracking, traffic or arrival times.
-
 ## Project Description
-Routa is a full-stack web application designed to help commuters, especially students and people unfamiliar with Batangas City, find public transportation information more easily. Through an interactive map, users can explore jeepney, bus, and van routes, search for direct routes between two places, and view transportation stops, fares, and operating hours. The system also allows registered users to save their favorite routes and report incorrect or outdated information, while administrators can manage transportation routes, stops, and service alerts.
-
-## Guide Questions:
-
-- What problem are you addressing? 
-
-  Routa addresses the difficulty of finding organized and accessible public transportation information by providing a centralized platform where commuters can search for routes, view stops on an interactive map, and check available transportation details.
-
-- Who experiences the problem?
-
-  Students, commuters, and people who are unfamiliar with transportation routes in Batangas City.
-
-- Why is it important to solve?
-
-  Finding transportation information can be challenging, especially for students and commuters who are new to an area. Routa aims to make route information easier to access by organizing transportation routes, stops, fares, and operating hours in one platform, helping users make more informed travel decisions.
+Routa is a web application designed to help commuters, especially students and people unfamiliar with Batangas City, find public transportation information more easily. Through an interactive map, users can explore jeepney, bus, and van routes, search for direct routes between two places, and view transportation stops, fares, and operating hours. The system also allows registered users to save their favorite routes and report incorrect or outdated information, while administrators can manage transportation routes, stops, and service alerts.
 
 ## Project Objectives
  **General Objective**
  
- To develop a web-based transportation information system using Java Spring Boot for the backend and React for the frontend, allowing commuters in Batangas City to explore transportation routes through an interactive map, search for direct routes between two places, and view available transportation information.
+To develop a web-based transportation information system using Java Spring Boot for the backend and React for the frontend, allowing commuters in Batangas City to explore transportation routes through an interactive map, search for direct routes between two places, and view available transportation information.
 
 **Specific Objectives**
 
@@ -38,7 +20,7 @@ The project aims to:
 - Provide administrators with tools to manage transportation information and service alerts.
 
 ## Target Users
-- **Commuters:** view and search routes, save favorites, read alerts, report wrong information.
+- **Commuters:** view and search available jeepney, bus, and van routes, save favorites, read alerts, report wrong information.
 
 ## Main Features
 
@@ -210,13 +192,10 @@ _Placeholders: replace with real screenshots (save them in `docs/screenshots/`).
 The current version of Routa has the following limitations:
 
 - Limited Geographic Coverage – The system focuses on Batangas City and does not yet cover other cities or municipalities.
-- Sample Transportation Data – Routes, stops, fares, schedules, vehicles, and drivers use sample data for educational purposes and are not official transportation information.
 - No Live GPS Tracking – The system displays routes using coordinates stored in the database but does not track the real-time locations of vehicles.
 - No Real-Time Traffic or Arrival Information – The application does not provide live traffic updates or real-time estimated arrival times.
-- Direct Routes Only – Route searching currently supports direct routes between two places. Transfers between different routes are not supported.
 - Dependence on Stored Information – The accuracy of displayed route details, stops, fares, and operating hours depends on the information available in the database.
 - Internet Requirement for Maps – An internet connection is required to load map tiles from OpenStreetMap.
-- Limited Administrative Controls – Some transportation details, such as vehicles and drivers, rely on sample data and do not have separate administration screens.
 - Because of these limitations, Routa should be used as a school project demonstration and not as an official source of transportation information.
   
 ## Future Improvements
