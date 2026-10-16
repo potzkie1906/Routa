@@ -1,5 +1,5 @@
 -- =====================================================================
--- TransitHub SAMPLE / DEMO DATA
+-- RoutaSAMPLE / DEMO DATA
 -- *** FICTIONAL DATA FOR A SCHOOL PROJECT. NOT OFFICIAL TRANSPORTATION INFORMATION. ***
 -- Coordinates are approximate. Replace them with exact values from
 -- openstreetmap.org if you want more accurate map lines.
@@ -133,7 +133,7 @@ INSERT INTO schedules (route_id, first_trip, last_trip, frequency_minutes, days_
 
 -- ALERTS (demo)
 INSERT INTO alerts (title, message, severity, active, route_id) VALUES
-('Demo announcement', 'This is a sample announcement. All TransitHub data is fictional demo data.', 'INFO', TRUE, NULL),
+('Demo announcement', 'This is a sample announcement. All Routa data is fictional demo data.', 'INFO', TRUE, NULL),
 ('Lipa - Tambo temporarily inactive (demo)', 'Sample alert showing a route-specific warning.', 'WARNING', TRUE, 8);
 
 -- Because we inserted explicit ids, move each id counter past the highest id used,

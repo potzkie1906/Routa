@@ -47,7 +47,7 @@ export default function RouteSearch({
   }
 
   const inputClass =
-    'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40'
+    'w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-secondary/50'
 
   return (
     <form
@@ -99,7 +99,7 @@ export default function RouteSearch({
         <div className="flex gap-2">
           <button
             type="submit"
-            className="rounded-lg bg-primary px-5 py-2 font-semibold text-white hover:bg-blue-700"
+            className="rounded-lg bg-primary px-5 py-2 font-semibold text-white hover:bg-primary-dark"
           >
             Search
           </button>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router'
 import FormField from '../components/FormField'
+import Logo from '../components/Logo'
 import { useAuth } from '../hooks/useAuth'
 import { parseApiError } from '../utils/apiError'
 import { validateEmail, validateRequired } from '../utils/validation'
@@ -54,8 +55,9 @@ export default function Login() {
 
   return (
     <section className="mx-auto max-w-md">
+      <Logo className="mb-6 h-10 w-auto" />
       <h1 className="text-2xl font-bold">Log in</h1>
-      <p className="mt-1 text-slate-600">Welcome back to TransitHub.</p>
+      <p className="mt-1 text-slate-600">Welcome back to Routa.</p>
 
       <form onSubmit={handleSubmit} noValidate className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         {serverError && (
@@ -70,7 +72,7 @@ export default function Login() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
+          className="w-full rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-primary-dark disabled:opacity-60"
         >
           {submitting ? 'Logging in...' : 'Log in'}
         </button>
@@ -83,8 +85,7 @@ export default function Login() {
         </Link>
       </p>
       <p className="mt-2 text-center text-xs text-slate-500">
-        Demo accounts: admin@transithub.local and user@transithub.local. Their passwords are set in the
-        backend .env file.
+        Demo accounts: admin@routa.local and user@routa.local.
       </p>
     </section>
   )

@@ -1,7 +1,7 @@
 # Routa
 
 ## Project Description
-Routa is a web application designed to help commuters, especially students and people unfamiliar with Batangas City, find public transportation information more easily. Through an interactive map, users can explore jeepney, bus, and van routes, search for direct routes between two places, and view transportation stops, fares, and operating hours. The system also allows registered users to save their favorite routes and report incorrect or outdated information, while administrators can manage transportation routes, stops, and service alerts.
+Routa  is a web application designed to help commuters, especially students and people unfamiliar with Batangas City, find public transportation information more easily. Through an interactive map, users can explore jeepney, bus, and van routes, search for direct routes between two places, and view transportation stops, fares, and operating hours. The system also allows registered users to save their favorite routes and report incorrect or outdated information, while administrators can manage transportation routes, stops, and service alerts.
 
 ## Project Objectives
  **General Objective**
@@ -50,7 +50,7 @@ The project aims to:
 
 ## Project Structure
 ```
-transithub/
+routa/
 ├── frontend/       React + TypeScript (Vite)
 ├── backend/        Spring Boot (Maven)
 ├── database/       schema.sql, seed/sample-data.sql, migrations/, tools/ (road-alignment tool)
@@ -100,8 +100,8 @@ services, 6 vehicles, 5 drivers, 2 alerts).
 If the database already existed before these files were added, apply them once by hand
 (Git Bash / macOS / Linux):
 ```bash
-docker exec -i transithub-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/schema.sql
-docker exec -i transithub-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/seed/sample-data.sql
+docker exec -i routa-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/schema.sql
+docker exec -i routa-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/seed/sample-data.sql
 ```
 Do this only once: loading the sample data twice creates duplicate rows.
 
@@ -137,8 +137,8 @@ No password is stored in the code or in Git.
 
 | Role | Email (default) | Password |
 |---|---|---|
-| Admin | `admin@transithub.local` | the value of `DEMO_ADMIN_PASSWORD` in your `.env` |
-| User | `user@transithub.local` | the value of `DEMO_USER_PASSWORD` in your `.env` |
+| Admin | `admin@routa.local` | the value of `DEMO_ADMIN_PASSWORD` in your `.env` |
+| User | `user@routa.local` | the value of `DEMO_USER_PASSWORD` in your `.env` |
 
 Anyone can also register a normal account on the Register page. Nobody can register as an admin:
 an admin is a demo account or is promoted by another admin. These accounts are for development
@@ -189,17 +189,17 @@ _Placeholders: replace with real screenshots (save them in `docs/screenshots/`).
 | Admin route form | `docs/screenshots/admin-route-form.png` |
 
 ## Known Limitations
-The current version of Routa has the following limitations:
+The current version of Routahas the following limitations:
 
 - Limited Geographic Coverage – The system focuses on Batangas City and does not yet cover other cities or municipalities.
 - No Live GPS Tracking – The system displays routes using coordinates stored in the database but does not track the real-time locations of vehicles.
 - No Real-Time Traffic or Arrival Information – The application does not provide live traffic updates or real-time estimated arrival times.
 - Dependence on Stored Information – The accuracy of displayed route details, stops, fares, and operating hours depends on the information available in the database.
 - Internet Requirement for Maps – An internet connection is required to load map tiles from OpenStreetMap.
-- Because of these limitations, Routa should be used as a school project demonstration and not as an official source of transportation information.
+- Because of these limitations, Routashould be used as a school project demonstration and not as an official source of transportation information.
   
 ## Future Improvements
-Routa can be improved in future versions to provide commuters with more complete and convenient transportation information. Possible improvements include:
+Routacan be improved in future versions to provide commuters with more complete and convenient transportation information. Possible improvements include:
 
 - Expanded Coverage – Extend the system to include transportation routes in other cities and municipalities beyond Batangas City.
 - Multi-Route Search – Support routes with transfers so users can find alternative ways to reach their destinations.

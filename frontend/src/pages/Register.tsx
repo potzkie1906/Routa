@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, Navigate, useNavigate } from 'react-router'
 import FormField from '../components/FormField'
+import Logo from '../components/Logo'
 import { useAuth } from '../hooks/useAuth'
 import { parseApiError } from '../utils/apiError'
 import { validateEmail, validatePassword, validateRequired } from '../utils/validation'
@@ -62,6 +63,7 @@ export default function Register() {
 
   return (
     <section className="mx-auto max-w-md">
+      <Logo className="mb-6 h-10 w-auto" />
       <h1 className="text-2xl font-bold">Create an account</h1>
       <p className="mt-1 text-slate-600">Save favorite routes and report wrong information.</p>
 
@@ -85,7 +87,7 @@ export default function Register() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
+          className="w-full rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-primary-dark disabled:opacity-60"
         >
           {submitting ? 'Creating account...' : 'Sign up'}
         </button>

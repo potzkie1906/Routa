@@ -3,7 +3,7 @@
  * Makes the route lines on the map follow real roads.
  *
  * What it does:
- *   1. Reads every route (with its stops, in order) from the running TransitHub backend.
+ *   1. Reads every route (with its stops, in order) from the running Routa backend.
  *   2. Asks a road-routing service (OSRM, built on OpenStreetMap data) for the road between the stops.
  *   3. Simplifies the result (removes points that are almost on a straight line) so the
  *      database does not store thousands of points.

@@ -1,4 +1,5 @@
 import { Outlet, useNavigate } from 'react-router'
+import Logo from '../components/Logo'
 import Sidebar from '../components/Sidebar'
 import { useAuth } from '../hooks/useAuth'
 
@@ -14,10 +15,11 @@ export default function AdminLayout() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="bg-secondary text-white">
+      <header className="bg-primary text-white">
         <div className="flex items-center justify-between px-4 py-3">
-          <span className="text-lg font-bold">
-            Transit<span className="text-blue-400">Hub</span> Admin
+          <span className="flex items-center gap-2">
+            <Logo variant="white" className="h-7 w-auto" />
+            <span className="rounded bg-white/15 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">Admin</span>
           </span>
           <div className="flex items-center gap-3 text-sm">
             <span className="hidden sm:inline">{user?.fullName}</span>

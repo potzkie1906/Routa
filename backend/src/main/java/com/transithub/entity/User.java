@@ -1,7 +1,10 @@
 package com.transithub.entity;
 
+import java.time.Instant;
+
 import com.transithub.entity.enums.Role;
 import com.transithub.util.ValidationUtils;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,9 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-import java.time.Instant;
-
-/** A person who uses TransitHub. The role decides whether they are a normal user or an admin. */
+/** A person who uses routa. The role decides whether they are a normal user or an admin. */
 @Entity
 @Table(name = "users")
 public class User {

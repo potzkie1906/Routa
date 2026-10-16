@@ -1,4 +1,4 @@
-# Database Design — TransitHub (PostgreSQL)
+# Database Design — Routa (PostgreSQL)
 
 > All sample rows are fictional demo data, not official transportation information.
 

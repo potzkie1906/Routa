@@ -11,6 +11,7 @@ import BoundaryLayer from './BoundaryLayer'
 import RouteArrows from './RouteArrows'
 import { routeLineWidth } from '../utils/routeArrows'
 import StopMarker from './StopMarker'
+import { BRAND_COLORS } from '../utils/brandColors'
 
 interface MapViewProps {
   routes: Route[] // the routes to draw
@@ -81,10 +82,11 @@ export default function MapView({
   const drawOrder = [...routes].sort((a, b) => importance(a) - importance(b))
 
   return (
-    <MapContainer center={DEFAULT_CENTER} zoom={DEFAULT_ZOOM} scrollWheelZoom className="h-full w-full">
+      <MapContainer center={DEFAULT_CENTER} zoom={DEFAULT_ZOOM} scrollWheelZoom className="th-map h-full w-full">
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        className="th-tiles-soft"
       />
       <FitBounds bounds={focusBounds} />
       <TapHandler onTap={onMapTap} />
@@ -148,7 +150,7 @@ export default function MapView({
             <CircleMarker
               center={[selectedRoute.stops[0].stop.latitude, selectedRoute.stops[0].stop.longitude]}
               radius={11}
-              pathOptions={{ color: '#22c55e', weight: 4, fill: false }}
+              pathOptions={{ color: '#ffffff', weight: 2, fillColor: BRAND_COLORS.accent, fillOpacity: 0.8 }}
               interactive={false}
             />
           )}
@@ -159,7 +161,7 @@ export default function MapView({
                 selectedRoute.stops[selectedRoute.stops.length - 1].stop.longitude,
               ]}
               radius={11}
-              pathOptions={{ color: '#ef4444', weight: 4, fill: false }}
+              pathOptions={{ color: '#ffffff', weight: 2, fillColor: BRAND_COLORS.accent, fillOpacity: 0.8 }}
               interactive={false}
             />
           )}

@@ -15,7 +15,7 @@ interface MapInfoCardProps {
 /** Small text under a route: tells the user what a tap on it will do. */
 function ShowHint({ shown }: { shown: boolean }) {
   return (
-    <span className={`mt-2 block text-xs font-semibold ${shown ? 'text-indigo-600' : 'text-slate-500'}`}>
+    <span className={`mt-2 block text-xs font-semibold ${shown ? 'text-primary' : 'text-slate-500'}`}>
       {shown ? 'Shown on the map · tap to hide' : 'Tap to show on the map'}
     </span>
   )
@@ -45,7 +45,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
       <div className="min-h-0 flex-1 space-y-3 overflow-y-auto px-4 py-3">
         {/* ---------- a road was tapped ---------- */}
         {info.kind === 'road' && info.matches.length === 0 && (
-          <p className="text-sm text-slate-600">No TransitHub route passes here. Tap on a road a route uses, or pick a route in the list.</p>
+          <p className="text-sm text-slate-600">No route passes here. Tap on a road a route uses, or pick a route in the list.</p>
         )}
         {info.kind === 'road' &&
           info.matches.map(({ route }) => (
@@ -55,7 +55,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
               onClick={() => onShowRoute(route.id)}
               aria-pressed={route.id === selectedRouteId}
               className={`block w-full rounded-lg border p-3 text-left ${
-                route.id === selectedRouteId ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200 hover:bg-slate-50'
+                route.id === selectedRouteId ? 'border-secondary bg-secondary/10' : 'border-slate-200 hover:bg-slate-50'
               }`}
             >
               <span className="flex flex-wrap items-center gap-2">
@@ -88,7 +88,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
           info.trips.map(({ route, destinations }) => (
             <div
               key={route.id}
-              className={`rounded-lg border p-3 ${route.id === selectedRouteId ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200'}`}
+              className={`rounded-lg border p-3 ${route.id === selectedRouteId ? 'border-secondary bg-secondary/10' : 'border-slate-200'}`}
             >
               <div className="flex flex-wrap items-center gap-2">
                 <TypeBadge type={route.transportation.type} />
