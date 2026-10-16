@@ -1,4 +1,4 @@
-# TransitHub REST API
+# Routa REST API
 
 Base address while developing: `http://localhost:8080`. All data is JSON.
 All route, stop and fare data is **fictional demo data**.
@@ -241,7 +241,7 @@ curl "http://localhost:8080/api/routes/search?origin=Lipa&destination=Batangas"
 curl "http://localhost:8080/api/stops/nearby?lat=13.9411&lng=121.1631&radiusKm=5"
 # log in (use the demo admin password you put in .env) and keep the token
 curl -X POST http://localhost:8080/api/auth/login -H "Content-Type: application/json" \
-     -d '{"email":"admin@transithub.local","password":"YOUR_PASSWORD"}'
+     -d '{"email":"admin@routa.local","password":"YOUR_PASSWORD"}'
 # create a stop (needs an admin token)
 curl -X POST http://localhost:8080/api/stops -H "Content-Type: application/json" \
      -H "Authorization: Bearer PASTE_TOKEN_HERE" \

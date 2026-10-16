@@ -21,7 +21,7 @@ OpenStreetMap data, free demo server `router.project-osrm.org`).
    or look at the stop on openstreetmap.org).
 4. Apply the generated file to the database:
    ```bash
-   docker exec -i transithub-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/seed/route-paths.sql
+   docker exec -i routa-db sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB"' < database/seed/route-paths.sql
    ```
    It runs in one transaction, and running it again gives the same result.
 5. Reload the map page. The lines now follow the roads.

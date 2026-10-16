@@ -2,6 +2,7 @@ import { CircleMarker, Marker, Tooltip } from 'react-leaflet'
 import type { Stop } from '../types/Stop'
 import {isTerminal} from '../utils/stops'
 import { selectedTerminalPin, terminalPin } from './terminalIcon'
+import { BRAND_COLORS } from '../utils/brandColors'
 
 interface StopMarkerProps {
   stop: Stop
@@ -38,9 +39,9 @@ export default function StopMarker({ stop, selected, onTap }: StopMarkerProps) {
       radius={selected ? 10 : 7}
       // bubblingMouseEvents: false = this click is not ALSO treated as a tap on the road below
       pathOptions={{
-        color: '#6366f1',
+        color: BRAND_COLORS.primary,
         weight: 2,
-        fillColor: selected ? '#6366f1' : '#ffffff',
+        fillColor: selected ? BRAND_COLORS.primary : '#ffffff',
         fillOpacity: 1,
         bubblingMouseEvents: false,
       }}

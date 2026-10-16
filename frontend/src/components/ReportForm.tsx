@@ -60,7 +60,7 @@ export default function ReportForm({ routeId }: { routeId: number }) {
         maxLength={MAX_LENGTH}
         rows={3}
         placeholder="For example: the fare is now higher, or a stop has moved."
-        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
+        className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-secondary/50"
       />
       <div className="flex items-center justify-between text-xs text-slate-500">
         <span>
@@ -75,7 +75,7 @@ export default function ReportForm({ routeId }: { routeId: number }) {
       <button
         type="submit"
         disabled={submitting}
-        className="rounded-lg bg-secondary px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-60"
+        className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark disabled:opacity-60"
       >
         {submitting ? 'Sending...' : 'Send report'}
       </button>

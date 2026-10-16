@@ -16,7 +16,7 @@ import java.sql.Statement;
 @Service
 public class HealthService {
 
-    private static final String APPLICATION_NAME = "TransitHub";
+    private static final String APPLICATION_NAME = "routa";
 
     private final DataSource dataSource;
 

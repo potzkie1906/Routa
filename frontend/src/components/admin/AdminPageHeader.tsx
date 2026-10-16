@@ -35,12 +35,12 @@ export default function AdminPageHeader({
               value={search ?? ''}
               onChange={(event) => onSearchChange(event.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-secondary/50"
             />
           </>
         )}
         {onAdd && (
-          <button type="button" onClick={onAdd} className="rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-blue-700">
+          <button type="button" onClick={onAdd} className="rounded-lg bg-primary px-4 py-2 font-semibold text-white hover:bg-primary-dark">
             {addLabel ?? 'Add'}
           </button>
         )}

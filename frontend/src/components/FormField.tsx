@@ -34,7 +34,7 @@ export default function FormField({
         placeholder={placeholder}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-error` : undefined}
-        className={`w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40 ${
+        className={`w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-secondary/50 ${
           error ? 'border-danger' : 'border-slate-300'
         }`}
       />

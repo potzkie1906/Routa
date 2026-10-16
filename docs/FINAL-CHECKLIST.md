@@ -20,7 +20,7 @@ git rm frontend/src/pages/SetupCheck.tsx frontend/src/types/Api.ts frontend/src/
 
 **Build and test**
 ```bash
-docker compose up -d && docker compose ps       # transithub-db is "healthy"
+docker compose up -d && docker compose ps       # routa-db is "healthy"
 cd backend && ./mvnw clean test                 # all green
 cd ../frontend && npm run build && npm test     # build succeeds, tests green
 ```

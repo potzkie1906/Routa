@@ -101,7 +101,7 @@ function RouteDetailsLoader({ routeId }: { routeId: number }) {
       <section className="flex flex-wrap items-center gap-3">
         <Link
           to={`/map?route=${route.id}`}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+          className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark"
         >
           View on map
         </Link>
