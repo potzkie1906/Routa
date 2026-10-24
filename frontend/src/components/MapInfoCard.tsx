@@ -30,7 +30,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
       : `${info.trips.length} route${info.trips.length === 1 ? '' : 's'} leave from here`
 
   return (
-    <section aria-label={title} className="flex max-h-full w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
+    <section aria-label={title} className="flex max-h-full w-full animate-fade-up flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-lg">
       <header className="flex items-start gap-3 border-b border-slate-200 px-4 py-3">
         <div className="min-w-0 flex-1">
           <h2 className="font-semibold">{title}</h2>

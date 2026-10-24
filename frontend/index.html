@@ -11,8 +11,31 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
   </head>
+    <style>
+      /* The Routa loader that covers the screen while the app starts. main.tsx removes it. */
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: #f8f9fa;
+        transition: opacity 0.4s ease;
+      }
+      #splash img {
+        width: min(70vw, 272px);
+        height: auto;
+      }
+      #splash.splash-hide {
+        opacity: 0;
+        pointer-events: none;
+      }
+    </style>
   <body>
     <div id="root"></div>
+    <div id="splash" role="status">
+      <img src="/routa-loader.svg" alt="Loading Routa" width="272" height="182" />
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -20,7 +20,7 @@ export default function Modal({ title, onClose, children, wide = false }: ModalP
 
   return (
     <div
-      className="fixed inset-0 z-[2000] flex items-start justify-center overflow-y-auto bg-black/50 p-4"
+      className="fixed inset-0 z-[2000] flex animate-fade-in items-start justify-center overflow-y-auto bg-black/50 p-4"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose()
       }}
@@ -29,7 +29,7 @@ export default function Modal({ title, onClose, children, wide = false }: ModalP
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={`my-8 w-full rounded-xl bg-white p-6 shadow-xl ${wide ? 'max-w-3xl' : 'max-w-lg'}`}
+        className={`my-8 w-full animate-pop-in rounded-xl bg-white p-6 shadow-xl ${wide ? 'max-w-3xl' : 'max-w-lg'}`}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <h2 className="text-xl font-bold">{title}</h2>

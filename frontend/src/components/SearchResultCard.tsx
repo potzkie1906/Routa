@@ -17,7 +17,7 @@ export default function SearchResultCard({ route, origin, destination }: SearchR
   const section = findTripSection(route, origin, destination)
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
       <div className="flex flex-wrap items-center gap-2">
         <TypeBadge type={route.transportation.type} />
         <StatusBadge status={route.status} />
