@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Loading">
+<style>
+.hop, .shadow { transform-box: fill-box; transform-origin: center bottom; }
+.hop { animation: hop 1.2s infinite; }
+.shadow { transform-origin: center; animation: shadow 1.2s infinite; }
+@keyframes hop {
+  0%, 100% { transform: translateY(0) scale(1.1, 0.9); animation-timing-function: ease-out; }
+  12% { transform: translateY(0) scale(1, 1); animation-timing-function: cubic-bezier(0, 0, 0.58, 1); }
+  50% { transform: translateY(-14px) scale(0.97, 1.04); animation-timing-function: cubic-bezier(0.42, 0, 1, 1); }
+  88% { transform: translateY(0) scale(1, 1); animation-timing-function: ease-out; }
+}
+@keyframes shadow {
+  0%, 12%, 88%, 100% { transform: scale(1); opacity: 0.22; animation-timing-function: ease-in-out; }
+  50% { transform: scale(0.55); opacity: 0.1; animation-timing-function: ease-in-out; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<ellipse class="shadow" cx="27.5" cy="56.4" rx="9.5" ry="2.4" fill="#1E3A5F" opacity="0.22"/>
+<g class="hop"><path fill="#EC2027" fill-rule="evenodd" transform="matrix(0.47170 0 0 0.47170 -42.297 -40.740)" d="M131.18 162.46C130.82 170.79 135.48 182.53 137.78 190.73C138.15 192.03 139.58 198.12 139.98 198.8C140.28 199.31 140.72 199.74 141.28 199.97C142.69 200.55 144.09 199.56 145.28 198.93C148.32 197.32 151.41 195.79 154.51 194.28C160.12 191.54 167.88 188.31 172.75 184.59C179.42 179.51 183.34 171.78 183.79 163.48C184.64 147.87 170.73 135.41 155.45 136.45C146.4 137.06 138.35 143.12 134.25 151.05C132.44 154.54 131.34 158.53 131.18 162.46ZM147.67 163.69C147.47 159.47 149.26 155.08 153.12 152.98C159.47 149.54 167.96 154.43 168.09 161.88C168.17 166.25 165.39 170.72 161.19 172.16C155.37 174.16 147.99 170.11 147.67 163.69Z"/></g>
+</svg>

@@ -2,10 +2,12 @@ interface LoadingSpinnerProps {
   label?: string
 }
 
+/** The hopping Routa pin and a short message, shown while something is loading. */
 export default function LoadingSpinner({ label = 'Loading...' }: LoadingSpinnerProps) {
   return (
-    <div className="flex items-center justify-center gap-3 py-16 text-slate-600" role="status">
-      <span className="h-6 w-6 animate-spin rounded-full border-2 border-slate-300 border-t-primary" />
+    <div className="flex flex-col items-center justify-center gap-2 py-16 text-slate-600" role="status">
+      {/* the hop animation is inside the SVG file itself */}
+      <img src="/routa-pin-loader.svg" alt="" className="h-16 w-16" />
       <span>{label}</span>
     </div>
   )

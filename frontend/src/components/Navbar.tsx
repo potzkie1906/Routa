@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router'
+import { Link, NavLink} from 'react-router'
 import { useAuth } from '../hooks/useAuth'
 import Logo from './Logo'
 
@@ -19,17 +19,10 @@ function linkClass({ isActive }: { isActive: boolean }): string {
 }
 
 export default function Navbar() {
-  const { user, isAuthenticated, isAdmin, logout } = useAuth()
-  const navigate = useNavigate()
+  const { user, isAuthenticated, isAdmin } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
-
-  const handleLogout = () => {
-    logout()
-    closeMenu()
-    navigate('/')
-  }
 
   // The same links are used in the desktop bar and in the mobile menu.
   const links = (
@@ -55,13 +48,6 @@ export default function Navbar() {
       <NavLink to="/profile" className={linkClass} onClick={closeMenu}>
         {user?.fullName}
       </NavLink>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="rounded-md px-3 py-2 text-left text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white"
-      >
-        Log out
-      </button>
     </>
   ) : (
     <>
