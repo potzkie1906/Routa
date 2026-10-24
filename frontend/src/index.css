@@ -1,34 +1,103 @@
 @import "tailwindcss";
 
-/* TransitHub colors. Tailwind turns each --color-* into classes,
-   for example bg-primary, text-secondary, border-danger. */
+/* Routa colors. Tailwind turns each --color-* into classes,
+   for example bg-primary, text-foreground, ring-secondary. */
 @theme {
-  --color-primary: #2563eb;
-  --color-secondary: #0f172a;
-  --color-background: #f8fafc;
+  --color-primary: #1e3a5f; /* navy: header, buttons, links */
+  --color-primary-dark: #162d4a; /* darker navy: buttons under the mouse */
+  --color-secondary: #3b82f6; /* mid blue: focus rings, selected cards, city outline */
+  --color-accent: #e63946; /* coral red: small highlights, never behind text */
+  --color-background: #f8f9fa; /* off-white page */
+  --color-foreground: #212529; /* charcoal text */
   --color-success: #16a34a;
   --color-warning: #f59e0b;
   --color-danger: #dc2626;
+
+    /* Animations. Tailwind turns each --animate-* into a class, for example animate-fade-up.
+     "backwards" means: before it starts, show the first frame; after it ends, leave no trace. */
+  --animate-fade-in: fade-in 0.2s ease-out backwards;
+  --animate-fade-up: fade-up 0.35s ease-out backwards;
+  --animate-pop-in: pop-in 0.2s ease-out backwards;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+  }
 }
 
 body {
   margin: 0;
   background-color: var(--color-background);
-  color: var(--color-secondary);
+  color: var(--color-foreground);
+}
+/* ------------------------------------------------------------------ motion */
+
+/* Buttons and links change color smoothly, and a button sinks a little while it is pressed. */
+@layer base {
+  a,
+  button {
+    transition: color 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+  }
+  button:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+/* Cards inside a "stagger" list fade up one after another, 60 ms apart. */
+.stagger > * {
+  animation: var(--animate-fade-up);
+}
+.stagger > :nth-child(2) {
+  animation-delay: 60ms;
+}
+.stagger > :nth-child(3) {
+  animation-delay: 120ms;
+}
+.stagger > :nth-child(4) {
+  animation-delay: 180ms;
+}
+.stagger > :nth-child(5) {
+  animation-delay: 240ms;
+}
+.stagger > :nth-child(n + 6) {
+  animation-delay: 300ms;
+}
+
+/* People who turned on "Reduce motion" in their phone or computer settings get no animations. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* ------------------------------------------------------------------ soft grey map */
 
 /* background shown before the map pictures (tiles) arrive */
 .th-map {
-  background: #eceef3;
+  background: #e3e8f5;
   font-family: inherit;
 }
 
 /* The free OpenStreetMap tiles made soft grey with CSS filters only (no API key):
    take most of the color out, then make it a little lighter and softer. */
 .th-tiles-soft {
-  filter: grayscale(0.85) brightness(1.06) contrast(0.88);
+  filter: grayscale(.3) brightness(1.06) contrast(1) saturate(1);
 }
 
 /* city outline: a soft blurred glow under a sharp indigo line */
@@ -42,7 +111,7 @@ body {
   white-space: nowrap;
   font-weight: 800;
   letter-spacing: 0.32em;
-  color: #4f46e5;
+  color: var(--color-primary);
   text-shadow: 0 0 4px #fff, 0 0 12px #fff;
   pointer-events: none;
 }
@@ -75,24 +144,24 @@ body {
   padding: 6px 12px;
   font-weight: 600;
   font-size: 13px;
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.18);
+  box-shadow: 0 6px 20px rgba(30, 58, 95, 0.18);
 }
 .leaflet-tooltip-right.th-terminal-label::before {
   border-right-color: #fff;
 }
 
-/* zoom buttons: white rounded card with indigo symbols */
+/* zoom buttons: white rounded card with navy symbols */
 .th-map .leaflet-bar {
   border: none;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.18);
+  box-shadow: 0 6px 20px rgba(30, 58, 95, 0.18);
 }
 .th-map .leaflet-bar a,
 .th-map .leaflet-bar a:hover {
   background: #fff;
-  color: #4f46e5;
-  border-bottom-color: #eef2ff;
+  color: var(--color-primary);
+  border-bottom-color: #e9ecef;
 }
 /* direction arrows on the selected route (a thin white outline keeps them visible on any line color) */
 .th-route-arrow {
@@ -101,4 +170,9 @@ body {
   color: #111827;
   filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff);
   pointer-events: none;
+}
+
+/* Edge draws its own eye button in password boxes. FormField has a Show button, so hide Edge's. */
+input::-ms-reveal {
+  display: none;
 }

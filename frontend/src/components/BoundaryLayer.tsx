@@ -3,6 +3,7 @@ import { divIcon } from 'leaflet'
 import { Marker, Polygon } from 'react-leaflet'
 import type { CityBoundary } from '../utils/boundary'
 import { cityLabelSize } from '../utils/boundary'
+import { BRAND_COLORS } from '../utils/brandColors'
 
 interface BoundaryLayerProps {
   boundary: CityBoundary
@@ -35,12 +36,12 @@ export default function BoundaryLayer({ boundary, zoom }: BoundaryLayerProps) {
       <Polygon
         positions={boundary.polygons}
         interactive={false}
-        pathOptions={{ className: 'th-boundary-glow', color: '#3b82f6', weight: 8, opacity: 0.25, fill: false }}
+        pathOptions={{ className: 'th-boundary-glow', color: BRAND_COLORS.secondary, weight: 8, opacity: 0.25, fill: false }}
       />
       <Polygon
         positions={boundary.polygons}
         interactive={false}
-        pathOptions={{ color: '#2563eb', weight: 2.5, opacity: 0.95, fillColor: '#3b82f6', fillOpacity: 0.08 }}
+        pathOptions={{ color: BRAND_COLORS.primary, weight: 2.5, opacity: 0.95, fillColor: BRAND_COLORS.secondary, fillOpacity: 0.08 }}
       />
       {size > 0 && (
         <Marker position={boundary.labelPoint} icon={labelIcon} interactive={false} keyboard={false} zIndexOffset={-1000} />

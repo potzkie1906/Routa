@@ -172,7 +172,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
           value={query}
           onChange={(event) => setQuery(event.target.value)}
           placeholder="Filter the routes on the map (name, code, origin, destination, operator)"
-          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 outline-none focus:ring-2 focus:ring-primary/40"
+          className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 outline-none focus:ring-2 focus:ring-secondary/50"
         />
       </div>
 
@@ -180,7 +180,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
         {/* ---------- side panel ---------- */}
         <aside className="space-y-4">
           {searchActive && (
-            <div className="rounded-xl border border-primary/40 bg-blue-50 p-4 shadow-sm">
+            <div className="rounded-xl border border-secondary/40 bg-secondary/10 p-4 shadow-sm">
               <h2 className="text-sm font-semibold">
                 Routes from {searchOrigin} to {searchDestination}
               </h2>

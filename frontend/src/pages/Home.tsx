@@ -38,13 +38,13 @@ export default function Home() {
   return (
     <div className="space-y-12">
       {/* hero */}
-      <section className="rounded-2xl bg-linear-to-br from-secondary to-primary px-6 py-14 text-center text-white sm:px-12">
+        <section className="rounded-2xl bg-linear-to-br from-primary to-secondary px-6 py-14 text-center text-white sm:px-12">
         <h1 className="text-3xl font-bold sm:text-5xl">Navigate Your City With Confidence</h1>
-        <p className="mx-auto mt-4 max-w-xl text-lg text-blue-100">
-          Find buses, jeepneys, vans, and other transportation routes in one place.
+        <p className="mx-auto mt-4 max-w-xl text-lg text-white/80">
+          Find buses, jeepneys, and vans route in one place.
         </p>
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link to="/map" className="rounded-lg bg-white px-6 py-3 font-semibold text-primary hover:bg-blue-50">
+          <Link to="/map" className="rounded-lg bg-white px-6 py-3 font-semibold text-primary hover:bg-white/90">
             Explore Map
           </Link>
           <Link to="/routes" className="rounded-lg border border-white/60 px-6 py-3 font-semibold hover:bg-white/10">

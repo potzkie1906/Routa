@@ -1,5 +1,5 @@
 -- =====================================================================
--- TransitHub database schema (PostgreSQL)
+-- Routa database schema (PostgreSQL)
 --
 -- This script is safe to run more than once (IF NOT EXISTS).
 -- Money uses NUMERIC (exact decimals), never floating point.

@@ -13,7 +13,7 @@ describe('validateRequired', () => {
 
 describe('validateEmail', () => {
   it('accepts a normal address', () => {
-    expect(validateEmail('user@transithub.local')).toBe('')
+    expect(validateEmail('user@routa.local')).toBe('')
   })
   it('rejects a missing or broken address', () => {
     expect(validateEmail('')).not.toBe('')

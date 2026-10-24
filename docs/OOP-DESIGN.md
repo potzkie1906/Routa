@@ -2,7 +2,7 @@
 
 This document explains where each of the four OOP principles appears in the Java code, and why
 it fits a transportation system. All class names below are real classes in
-`backend/src/main/java/com/transithub/`.
+`backend/src/main/java/com/routa/`.
 
 > Fares in the demo data and the fare formulas are sample rules for a school project,
 > not official fares.
@@ -139,7 +139,7 @@ Proof: `TransportationPolymorphismTest`.
 
 ## 8. Scope: three transportation types
 
-TransitHub models the three types that actually serve the Lipa - Batangas area: **bus, jeepney and van**.
+Routa models the three types that actually serve the Lipa - Batangas area: **bus, jeepney and van**.
 Shuttle and train were considered and removed from the scope. The design makes adding a type easy
 (the "open for extension" idea): create one more subclass of `Transportation`, add its value to the
 `TransportType` enum, add a `case` in `TransportationService.create`, and allow its name in the

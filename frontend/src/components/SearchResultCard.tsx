@@ -17,7 +17,7 @@ export default function SearchResultCard({ route, origin, destination }: SearchR
   const section = findTripSection(route, origin, destination)
 
   return (
-    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
       <div className="flex flex-wrap items-center gap-2">
         <TypeBadge type={route.transportation.type} />
         <StatusBadge status={route.status} />
@@ -33,7 +33,7 @@ export default function SearchResultCard({ route, origin, destination }: SearchR
       </p>
 
       {section && (
-        <p className="mt-3 rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-900">
+        <p className="mt-3 rounded-lg bg-secondary/10 px-3 py-2 text-sm text-primary">
           Get on at <strong>{route.stops[section.boardIndex].stop.name}</strong>, get off at{' '}
           <strong>{route.stops[section.alightIndex].stop.name}</strong>
           {section.minutes > 0 && <> (about {formatDuration(section.minutes)} on board)</>}.

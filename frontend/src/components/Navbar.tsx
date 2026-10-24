@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router'
+import { Link, NavLink} from 'react-router'
 import { useAuth } from '../hooks/useAuth'
+import Logo from './Logo'
 
 const mainLinks = [
   { to: '/', label: 'Home', end: true },
@@ -11,22 +12,17 @@ const mainLinks = [
 
 function linkClass({ isActive }: { isActive: boolean }): string {
   return `rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-    isActive ? 'bg-white/15 text-white' : 'text-slate-300 hover:bg-white/10 hover:text-white'
+        isActive
+      ? 'bg-white/10 text-white underline decoration-accent decoration-2 underline-offset-8'
+      : 'text-slate-300 hover:bg-white/10 hover:text-white'
   }`
 }
 
 export default function Navbar() {
-  const { user, isAuthenticated, isAdmin, logout } = useAuth()
-  const navigate = useNavigate()
+  const { user, isAuthenticated, isAdmin } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
-
-  const handleLogout = () => {
-    logout()
-    closeMenu()
-    navigate('/')
-  }
 
   // The same links are used in the desktop bar and in the mobile menu.
   const links = (
@@ -52,13 +48,6 @@ export default function Navbar() {
       <NavLink to="/profile" className={linkClass} onClick={closeMenu}>
         {user?.fullName}
       </NavLink>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="rounded-md px-3 py-2 text-left text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white"
-      >
-        Log out
-      </button>
     </>
   ) : (
     <>
@@ -68,7 +57,7 @@ export default function Navbar() {
       <Link
         to="/register"
         onClick={closeMenu}
-        className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+        className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-primary hover:bg-white/90"
       >
         Sign up
       </Link>
@@ -76,10 +65,10 @@ export default function Navbar() {
   )
 
   return (
-    <header className="sticky top-0 z-[1000] bg-secondary text-white shadow">
+    <header className="sticky top-0 z-[1000] bg-primary text-white shadow">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3" aria-label="Main">
-        <Link to="/" className="text-lg font-bold tracking-tight" onClick={closeMenu}>
-          Transit<span className="text-blue-400">Hub</span>
+        <Link to="/" className="shrink-0" onClick={closeMenu}>
+          <Logo variant="white" className="h-8 w-auto" />
         </Link>
 
         {/* desktop */}

@@ -39,6 +39,15 @@ describe('FormField', () => {
     render(<FormField id="email" label="Email" value="" onChange={() => {}} error="Email cannot be empty" />)
     expect(screen.getByText('Email cannot be empty')).toBeTruthy()
   })
+  it('shows and hides a password', () => {
+    render(<FormField id="password" label="Password" type="password" value="secret123" onChange={() => {}} />)
+    const input = screen.getByLabelText('Password') as HTMLInputElement
+    expect(input.type).toBe('password')
+    fireEvent.click(screen.getByRole('button', { name: 'Show password' }))
+    expect(input.type).toBe('text')
+    fireEvent.click(screen.getByRole('button', { name: 'Hide password' }))
+    expect(input.type).toBe('password')
+  })
 })
 
 describe('DataTable', () => {

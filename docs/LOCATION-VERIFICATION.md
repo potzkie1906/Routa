@@ -21,7 +21,7 @@ were not re-checked and keep their approximate demo positions (`location_verifie
 | **Batangas Grand Terminal** | **Yes** |
 | Tambo Barangay Hall | No (Lipa City) |
 
-TransitHub has **one** Batangas City terminal. No terminal was added: the map lists only what the data contains.
+Routa has **one** Batangas City terminal. No terminal was added: the map lists only what the data contains.
 
 ## Verification report
 

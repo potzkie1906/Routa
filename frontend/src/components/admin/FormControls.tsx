@@ -3,7 +3,7 @@ interface Option {
   label: string
 }
 
-const baseClass = 'w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-primary/40'
+const baseClass = 'w-full rounded-lg border bg-white px-3 py-2 outline-none focus:ring-2 focus:ring-secondary/50'
 
 interface SelectFieldProps {
   id: string
@@ -115,7 +115,7 @@ export function FormButtons({ busy, onCancel, saveLabel = 'Save' }: { busy: bool
       <button
         type="submit"
         disabled={busy}
-        className="rounded-lg bg-primary px-5 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-60"
+        className="rounded-lg bg-primary px-5 py-2 font-semibold text-white hover:bg-primary-dark disabled:opacity-60"
       >
         {busy ? 'Saving...' : saveLabel}
       </button>
