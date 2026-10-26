@@ -194,6 +194,12 @@ class ErrorHandlingTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Origin and destination must be different"));
     }
+    @Test
+    void searchTextLongerThan100CharactersReturns400() throws Exception {
+        mockMvc.perform(get("/api/routes/search").param("origin", "a".repeat(101)).param("destination", "Batangas"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Origin and destination must be at most 100 characters"));
+    }
 
     @Test
     void invalidNearbySearchReturns400() throws Exception {

@@ -13,7 +13,7 @@ services:
       POSTGRES_USER: ${DATABASE_USERNAME:?Set DATABASE_USERNAME in .env}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?Set DATABASE_PASSWORD in .env}
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - transithub_pgdata:/var/lib/postgresql/data
       # Scripts in /docker-entrypoint-initdb.d run ONCE, only when the database is brand new,

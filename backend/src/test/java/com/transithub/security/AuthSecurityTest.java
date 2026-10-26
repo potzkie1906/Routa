@@ -1,9 +1,7 @@
 package com.transithub.security;
 
-import com.transithub.entity.User;
-import com.transithub.entity.enums.Role;
-import com.transithub.repository.RouteRepository;
-import com.transithub.repository.UserRepository;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,18 +10,20 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
+
+import com.transithub.entity.User;
+import com.transithub.entity.enums.Role;
+import com.transithub.repository.RouteRepository;
+import com.transithub.repository.UserRepository;
 
 /**
  * Registration, login, tokens and role-based access, with the REAL security filters switched on.
@@ -47,12 +47,15 @@ class AuthSecurityTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private RateLimiter rateLimiter;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).addFilters(springSecurityFilterChain).build();
+        rateLimiter.resetAll(); // every test starts with zero tries
     }
 
     // ---------------- helpers ----------------
@@ -121,6 +124,18 @@ class AuthSecurityTest {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value("An account with this email already exists"));
     }
+    @Test
+    void registerRejectsAPasswordOver72Bytes() throws Exception {
+        // 38 characters, but each ñ takes 2 bytes: 2 + 36 x 2 = 74 bytes
+        String json = """
+                {"fullName":"Long Password","email":"long@example.com","password":"%s"}
+                """.formatted("a1" + "ñ".repeat(36));
+
+        mockMvc.perform(post("/api/auth/register").contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message")
+                        .value("Password is too long. Accented letters and emoji count as more than one character."));
+    }
 
     // ---------------- login ----------------
 
@@ -152,6 +167,41 @@ class AuthSecurityTest {
                     .andExpect(status().isUnauthorized())
                     .andExpect(jsonPath("$.status").value(401))
                     .andExpect(jsonPath("$.message").value("Invalid email or password"));
+        }
+    }
+    @Test
+    void theSixthLoginTryIn15MinutesGets429() throws Exception {
+        saveUser("guessed@example.com", Role.USER);
+        String wrong = loginJson("guessed@example.com", "Wrong-password1");
+        String right = loginJson("guessed@example.com", PASSWORD);
+
+        for (int i = 1; i <= 5; i++) {
+            mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(wrong))
+                    .andExpect(status().isUnauthorized());
+        }
+        // the 6th try is refused, even with the right password
+        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(right))
+                .andExpect(status().isTooManyRequests())
+                .andExpect(jsonPath("$.status").value(429))
+                .andExpect(jsonPath("$.message").value("Too many tries. Please wait 15 minutes and try again."));
+    }
+
+    @Test
+    void aCorrectLoginStartsTheCountAgain() throws Exception {
+        saveUser("forgetful@example.com", Role.USER);
+        String wrong = loginJson("forgetful@example.com", "Wrong-password1");
+        String right = loginJson("forgetful@example.com", PASSWORD);
+
+        for (int i = 1; i <= 4; i++) {
+            mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(wrong))
+                    .andExpect(status().isUnauthorized());
+        }
+        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(right))
+                .andExpect(status().isOk());
+        // back to zero: 5 more wrong passwords are all a normal 401, not 429
+        for (int i = 1; i <= 5; i++) {
+            mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON).content(wrong))
+                    .andExpect(status().isUnauthorized());
         }
     }
 

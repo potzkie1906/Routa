@@ -66,8 +66,9 @@ export default function RouteSearch({
             list={listId}
             value={origin}
             onChange={(event) => setOrigin(event.target.value)}
-            placeholder="For example: Lipa"
+            placeholder="For example: Batangas"
             autoComplete="off"
+            maxLength={100}
             className={inputClass}
           />
         </div>
