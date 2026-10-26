@@ -215,7 +215,7 @@ Routacan be improved in future versions to provide commuters with more complete 
 | Name | Role |
 |---|---|
 | Rodrigo B. Alderite Jr. | Backend Developer – Develops the Spring Boot API for route management, fares, authentication, and error handling. |
-| Red Zildjian C. Sepillo | Frontend Developer – Develops the React pages, route cards, and interactive map interface. |
+| Red Zildjian C. Sepillo | Frontend Developer – Develops the React pages, route cards, and the interactive map interface. |
 | Kirk Em Neo M. Legaspi | Frontend Developer and Data Gathering – Assists with frontend and map development and gathers transportation route data for Batangas City. |
 | Karl Vincent C. Samonte | Database and Data Gathering – Designs the PostgreSQL database tables and prepares scripts for loading transportation data. |
 
