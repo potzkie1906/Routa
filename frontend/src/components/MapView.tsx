@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useEffectEvent, useState } from 'react'
 import type { LatLngTuple } from 'leaflet'
 import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -6,6 +6,7 @@ import type { Route } from '../types/Route'
 import type { Stop } from '../types/Stop'
 import type { CityBoundary } from '../utils/boundary'
 import { isTerminal } from '../utils/stops'
+import { isPhoneScreen } from '../utils/screen'
 import { colorForType } from '../utils/transportColors'
 import BoundaryLayer from './BoundaryLayer'
 import RouteArrows from './RouteArrows'
@@ -22,6 +23,7 @@ interface MapViewProps {
   // routes found by a search (the others are dimmed); null when no search is active
   highlightedRouteIds: Set<number> | null
   focusBounds: LatLngTuple[] | null // the map zooms to show these points
+  cardOpen: boolean // the info card is open on the map, so the zoom leaves room for it
   tapPoint: LatLngTuple | null // where the user tapped a road (a small ring is drawn there)
   roadLines: Map<number, LatLngTuple[]> // route id -> line along the roads, for the routes in the info card
   onMapTap: (latitude: number, longitude: number, zoom: number) => void
@@ -32,14 +34,26 @@ interface MapViewProps {
 const DEFAULT_CENTER: LatLngTuple = [13.76, 121.08]
 const DEFAULT_ZOOM = 12
 
-/** Zooms the map to show a set of points whenever that set changes. */
-function FitBounds({ bounds }: { bounds: LatLngTuple[] | null }) {
+/** Pixels to keep free at the right and at the bottom of the map, so the info card covers no part of the route. */
+function roomForCard(cardOpen: boolean): [number, number] {
+  if (!cardOpen) return [40, 40]
+  if (isPhoneScreen()) return [40, 100] // phones: the folded card is a bar along the bottom
+  return [372, 40] // wider screens: the card is 320px wide, on the right
+}
+
+/** Zooms the map to show a set of points whenever that set changes, around the info card. */
+function FitBounds({ bounds, cardOpen }: { bounds: LatLngTuple[] | null; cardOpen: boolean }) {
   const map = useMap()
+  // An Effect Event always sees the latest cardOpen, but it does not make the Effect run again:
+  // the map zooms only when the bounds change, not when the card opens or closes.
+  const fit = useEffectEvent((points: LatLngTuple[]) => {
+    map.fitBounds(points, { paddingTopLeft: [40, 40], paddingBottomRight: roomForCard(cardOpen) })
+  })
   useEffect(() => {
     if (bounds && bounds.length > 0) {
-      map.fitBounds(bounds, { padding: [40, 40] })
+      fit(bounds)
     }
-  }, [map, bounds])
+  }, [bounds])
   return null
 }
 /** Reports the zoom level after every zoom, so the city name can change size. */
@@ -70,6 +84,7 @@ export default function MapView({
   selectedStopId,
   highlightedRouteIds,
   focusBounds,
+  cardOpen,
   tapPoint,
   roadLines,
   onMapTap,
@@ -88,7 +103,7 @@ export default function MapView({
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         className="th-tiles-soft"
       />
-      <FitBounds bounds={focusBounds} />
+      <FitBounds bounds={focusBounds} cardOpen={cardOpen} />
       <TapHandler onTap={onMapTap} />
       <ZoomWatcher onZoom={setZoom} />
 
