@@ -118,13 +118,12 @@ export default function MapView({
               <Polyline
                 positions={positions}
                 pathOptions={{
-                  color: colorForType(route.transportation.type),
+                  // a route that is not running right now (inactive or suspended) is gray
+                  color: route.currentStatus === 'ACTIVE' ? colorForType(route.transportation.type) : '#94a3b8',
                   weight: dimmed ? 2 : width,
                   opacity: selected ? 1 : dimmed ? 0.25 : 0.9,
                   lineCap: 'round',
                   lineJoin: 'round',
-                  // inactive and suspended routes are dashed
-                  dashArray: route.status === 'ACTIVE' ? undefined : '8 10',
                 }}
               >
                 <Tooltip sticky>{route.routeName}</Tooltip>

@@ -60,7 +60,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
             >
               <span className="flex flex-wrap items-center gap-2">
                 <TypeBadge type={route.transportation.type} />
-                <StatusBadge status={route.status} />
+                <StatusBadge status={route.currentStatus} />
               </span>
               <span className="mt-1.5 block font-semibold">{route.routeName}</span>
               <span className="block text-xs text-slate-500">
@@ -92,7 +92,7 @@ export default function MapInfoCard({ info, status, selectedRouteId, onClose, on
             >
               <div className="flex flex-wrap items-center gap-2">
                 <TypeBadge type={route.transportation.type} />
-                <StatusBadge status={route.status} />
+                <StatusBadge status={route.currentStatus} />
                 <span className="ml-auto text-sm">
                   <span className="text-slate-500">Fare </span>
                   {formatPeso(route.estimatedFare)}

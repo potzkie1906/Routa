@@ -1,6 +1,13 @@
 package com.transithub.entity;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.EnumSet;
+import java.util.Set;
+
 import com.transithub.util.ValidationUtils;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,8 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
-import java.time.LocalTime;
 
 /** Operating hours and how often a vehicle leaves, for one route. */
 @Entity
@@ -93,5 +98,53 @@ public class Schedule {
 
     public void setDaysOperating(String daysOperating) {
         this.daysOperating = ValidationUtils.requireNotBlank(daysOperating, "Days operating");
+    }
+        // ---------- behavior ----------
+
+    /**
+     * True when this schedule is running at that moment: on one of its days,
+     * from the first trip until the last trip (both included).
+     */
+    public boolean isOperatingAt(LocalDateTime moment) {
+        LocalTime time = moment.toLocalTime();
+        return operatingDays().contains(moment.getDayOfWeek())
+                && !time.isBefore(firstTrip)
+                && !time.isAfter(lastTrip);
+    }
+
+    /**
+     * The days written in daysOperating, like "MON-SUN", "MON-FRI", "SAT,SUN" or "DAILY".
+     * A range can wrap around the week ("FRI-MON"). Text it cannot read counts as
+     * every day, so the route then follows its hours only.
+     */
+    public Set<DayOfWeek> operatingDays() {
+        String text = daysOperating.toUpperCase().replace(" ", "");
+        if (text.equals("DAILY") || text.equals("EVERYDAY")) {
+            return EnumSet.allOf(DayOfWeek.class);
+        }
+        Set<DayOfWeek> days = EnumSet.noneOf(DayOfWeek.class);
+        for (String part : text.split(",")) {
+            String[] ends = part.split("-");
+            DayOfWeek first = toDay(ends[0]);
+            DayOfWeek last = toDay(ends[ends.length - 1]);
+            if (ends.length > 2 || first == null || last == null) {
+                return EnumSet.allOf(DayOfWeek.class);
+            }
+            for (DayOfWeek day = first; day != last; day = day.plus(1)) {
+                days.add(day);
+            }
+            days.add(last);
+        }
+        return days;
+    }
+
+    /** "MON" or "MONDAY" becomes MONDAY; anything else gives null. */
+    private static DayOfWeek toDay(String text) {
+        for (DayOfWeek day : DayOfWeek.values()) {
+            if (day.name().equals(text) || day.name().substring(0, 3).equals(text)) {
+                return day;
+            }
+        }
+        return null;
     }
 }

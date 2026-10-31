@@ -17,7 +17,7 @@ export default function RouteCard({ route, actions }: RouteCardProps) {
     <article className="flex flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-md">
       <div className="flex flex-wrap items-center gap-2">
         <TypeBadge type={route.transportation.type} />
-        <StatusBadge status={route.status} />
+        <StatusBadge status={route.currentStatus} />
       </div>
 
       <h3 className="mt-3 text-lg font-semibold">

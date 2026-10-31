@@ -1,9 +1,9 @@
 package com.transithub.dto.response;
 
-import com.transithub.dto.CoordinateDto;
-
 import java.math.BigDecimal;
 import java.util.List;
+
+import com.transithub.dto.CoordinateDto;
 
 /**
  * Everything the app needs to show one route: details, stops, the map line, fare and schedules.
@@ -16,6 +16,7 @@ public record RouteResponse(
         String origin,
         String destination,
         String status,
+        String currentStatus,
         int estimatedMinutes,
         double distanceKm,
         boolean demoData,
