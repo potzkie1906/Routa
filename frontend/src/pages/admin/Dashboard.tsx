@@ -17,19 +17,12 @@ function StatCard({ label, value }: { label: string; value: number }) {
 
 function Charts({ stats }: { stats: AdminStats }) {
   return (
-    <div className="mt-6 grid gap-4 lg:grid-cols-2">
+    <div className="mt-6">
       <BarChart
         title="Routes"
         data={[
           { label: 'Active routes', value: stats.activeRoutes, color: '#16a34a' },
           { label: 'Not active', value: stats.totalRoutes - stats.activeRoutes, color: '#94a3b8' },
-        ]}
-      />
-      <BarChart
-        title="Vehicles"
-        data={[
-          { label: 'Available', value: stats.availableVehicles, color: '#2563eb' },
-          { label: 'Not available', value: stats.totalVehicles - stats.availableVehicles, color: '#94a3b8' },
         ]}
       />
     </div>
@@ -47,13 +40,12 @@ export default function Dashboard() {
       {state.status === 'error' && <ErrorMessage message={state.message} onRetry={reload} />}
       {state.status === 'success' && (
         <>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                    {/* no vehicle numbers: Routa has no screen to add vehicles yet */}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <StatCard label="Routes" value={state.data.totalRoutes} />
             <StatCard label="Stops" value={state.data.totalStops} />
-            <StatCard label="Vehicles" value={state.data.totalVehicles} />
             <StatCard label="Users" value={state.data.totalUsers} />
             <StatCard label="Active routes" value={state.data.activeRoutes} />
-            <StatCard label="Available vehicles" value={state.data.availableVehicles} />
             <StatCard label="Active alerts" value={state.data.activeAlerts} />
             <StatCard label="Open reports" value={state.data.openReports} />
           </div>

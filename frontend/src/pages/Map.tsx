@@ -21,6 +21,7 @@ import { colorForType } from '../utils/transportColors'
 import type { TapInfo } from '../utils/mapTap'
 import { routesNearPoint, tapToleranceMeters, tripsFromStop } from '../utils/mapTap'
 import { isTerminal } from '../utils/stops'
+import { isPhoneScreen } from '../utils/screen'
 
 const NO_ROUTES: Route[] = []
 const NO_STOPS: Stop[] = []
@@ -61,6 +62,8 @@ export default function MapPage() {
 
 // what the last tap on the map found (null = no card shown)
 const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
+// true = the card is folded down to its header, so the map behind it stays visible
+const [cardFolded, setCardFolded] = useState(false)
 
   // ----- route search (the address looks like /map?origin=Lipa&destination=Batangas) -----
   const searchOrigin = searchParams.get('origin') ?? ''
@@ -87,7 +90,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
     const text = query.trim().toLowerCase()
     return allRoutes.filter((route) => {
       const typeAllowed = filters.types[route.transportation.type]
-      const statusAllowed = route.status === 'ACTIVE' ? filters.showActive : filters.showInactive
+      const statusAllowed = route.currentStatus === 'ACTIVE' ? filters.showActive : filters.showInactive
       return typeAllowed && statusAllowed && routeMatchesQuery(route, text)
     })
   }, [allRoutes, filters, query])
@@ -112,11 +115,13 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
         // A terminal or stop: the routes that leave from it, with the stops you can reach.
   const handleStopTap = (stop: Stop) => {
     setTapInfo({ kind: 'stop', stop, trips: tripsFromStop(stop.id, visibleRoutes) })
+    setCardFolded(false) // a new tap opens the card again
   }
         // Anywhere else (a road): every visible route whose line passes within about 14 screen pixels.
   const handleMapTap = (latitude: number, longitude: number, zoom: number) => {
     const matches = routesNearPoint(visibleRoutes, latitude, longitude, tapToleranceMeters(zoom, latitude))
     setTapInfo({ kind: 'road', latitude, longitude, matches })
+    setCardFolded(false) // a new tap opens the card again
   }
      // ----- the route drawn on the map -----
   // Only the selected route is drawn, so several routes on the same road never pile up.
@@ -125,8 +130,14 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
   const roadLines = useRoadLines(shownRoutes)
 
   // a route in the card: show it on the map, or hide it again if it is already shown
+    // show a route on the map (null = none). On a phone the card folds, so the line is not hidden under it.
+  const selectRoute = (routeId: number | null) => {
+    setSelectedRouteId(routeId)
+    if (routeId !== null && isPhoneScreen()) setCardFolded(true)
+  }
+  // a route in the card: show it on the map, or hide it again if it is already shown
   const toggleRoute = (routeId: number) => {
-    setSelectedRouteId((current) => (current === routeId ? null : routeId))
+    selectRoute(selectedRouteId === routeId ? null : routeId)
   }
     // closing the card also hides the route it was showing
   const closeCard = () => {
@@ -203,7 +214,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
                       <li key={route.id}>
                         <button
                           type="button"
-                          onClick={() => setSelectedRouteId(route.id)}
+                          onClick={() => selectRoute(route.id)}
                           className={`w-full rounded px-2 py-1.5 text-left text-sm hover:bg-white ${
                             route.id === selectedRoute?.id ? 'bg-white font-semibold' : ''
                           }`}
@@ -238,7 +249,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
                   <li key={route.id}>
                     <button
                       type="button"
-                      onClick={() => setSelectedRouteId(route.id === selectedRouteId ? null : route.id)}
+                      onClick={() => selectRoute(route.id === selectedRouteId ? null : route.id)}
                       className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-sm ${
                         route.id === selectedRoute?.id ? 'bg-primary/10 font-semibold' : 'hover:bg-slate-100'
                       }`}
@@ -248,7 +259,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
                         style={{ backgroundColor: colorForType(route.transportation.type) }}
                       />
                       <span className="flex-1">{route.routeName}</span>
-                      {route.status !== 'ACTIVE' && <span className="text-xs text-slate-500">{route.status.toLowerCase()}</span>}
+                      {route.currentStatus !== 'ACTIVE' && <span className="text-xs text-slate-500">{route.currentStatus.toLowerCase()}</span>}
                     </button>
                   </li>
                 ))}
@@ -269,20 +280,24 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
               selectedStopId={tapInfo?.kind === 'stop' ? tapInfo.stop.id : null}
               highlightedRouteIds={highlightedIds}
               focusBounds={focusBounds}
+              cardOpen={tapInfo !== null}
               tapPoint={tapInfo?.kind === 'road' ? [tapInfo.latitude, tapInfo.longitude] : null}
               roadLines={roadLines.lines}
               onMapTap={handleMapTap}
               onStopTap={handleStopTap}
             />
               
+            {/* the info card: along the bottom on phones (at most 45% of the map), on the right on wider screens */}
             {tapInfo && (
-              <div className="absolute inset-x-3 bottom-3 z-[1000] flex max-h-[70%] sm:inset-x-auto sm:bottom-auto sm:right-3 sm:top-3 sm:max-h-[calc(100%-24px)] sm:w-[320px]">
-                <MapInfoCard 
-                  info={tapInfo} 
+              <div className="absolute inset-x-3 bottom-3 z-[1000] flex max-h-[45%] sm:inset-x-auto sm:bottom-auto sm:right-3 sm:top-3 sm:max-h-[calc(100%-24px)] sm:w-[320px]">
+                <MapInfoCard
+                  info={tapInfo}
                   status={roadLines.loading ? 'Drawing the road lines...' : undefined}
-                  onClose={closeCard} 
+                  folded={cardFolded}
+                  onToggleFold={() => setCardFolded((folded) => !folded)}
+                  onClose={closeCard}
                   selectedRouteId={selectedRoute?.id ?? null}
-                  onShowRoute={toggleRoute} 
+                  onShowRoute={toggleRoute}
                 />
               </div>
             )}

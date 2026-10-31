@@ -66,12 +66,12 @@ function AllRoutes() {
   const [type, setType] = useState('')
   const [status, setStatus] = useState<'' | RouteStatus>('')
 
-  // a new function (and so a new request) is created only when a filter changes
-  const loadRoutes = useCallback(
-    () => getRoutes({ type: type || undefined, status: status || undefined }),
-    [type, status],
-  )
+  // a new function (and so a new request) is created only when the type changes
+  const loadRoutes = useCallback(() => getRoutes({ type: type || undefined }), [type])
   const { state, reload } = useApiData(loadRoutes)
+  // the status filter uses the status right now (from the operating hours), like the badges
+  const routes =
+    state.status === 'success' ? state.data.filter((route) => status === '' || route.currentStatus === status) : []
 
   return (
     <div>
@@ -117,16 +117,16 @@ function AllRoutes() {
       <div className="mt-6">
         {state.status === 'loading' && <LoadingSpinner label="Loading routes..." />}
         {state.status === 'error' && <ErrorMessage message={state.message} onRetry={reload} />}
-        {state.status === 'success' && state.data.length === 0 && (
+        {state.status === 'success' && routes.length === 0 && (
           <p className="rounded-xl border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500">
             No routes match these filters.
           </p>
         )}
-        {state.status === 'success' && state.data.length > 0 && (
+        {state.status === 'success' && routes.length > 0 && (
           <>
-            <p className="mb-3 text-sm text-slate-600">{state.data.length} route(s)</p>
+            <p className="mb-3 text-sm text-slate-600">{routes.length} route(s)</p>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {state.data.map((route) => (
+              {routes.map((route) => (
                 <RouteCard key={route.id} route={route} />
               ))}
             </div>

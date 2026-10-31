@@ -33,7 +33,8 @@ export interface Route {
   routeName: string
   origin: string
   destination: string
-  status: RouteStatus
+  status: RouteStatus // set by an admin
+  currentStatus: RouteStatus // right now, from the operating hours (shown to riders)
   estimatedMinutes: number
   distanceKm: number
   demoData: boolean

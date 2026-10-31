@@ -6,12 +6,13 @@ All route, stop and fare data is **fictional demo data**.
 ## Authentication and roles
 
 Login uses a **JWT token**. Register or log in, then send the token with every request that needs it:
-```
+
+```text
 Authorization: Bearer <token>
 ```
 
 | Method | Path | What it does | Who |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | POST | `/api/auth/register` | Create a USER account, returns a token (201) | everyone |
 | POST | `/api/auth/login` | Log in, returns a token (200) | everyone |
 | GET | `/api/auth/me` | The logged-in user's details | any logged-in user |
@@ -21,6 +22,7 @@ Register body: `{"fullName":"Ana Cruz","email":"ana@example.com","password":"Pas
 Login body: `{"email":"ana@example.com","password":"Passw0rd-1"}`
 
 Response of both:
+
 ```json
 {
   "token": "eyJhbGciOi...",
@@ -30,11 +32,12 @@ Response of both:
             "role": "USER", "active": true, "createdAt": "2026-10-02T04:15:30Z" }
 }
 ```
+
 A wrong email, a wrong password and a disabled account all return the same
 `401 "Invalid email or password"`, so nobody can find out which emails have accounts.
 
 | Role | Can do |
-|---|---|
+| --- | --- |
 | anyone (not logged in) | register, log in, and every **GET** on routes, stops, transportations, alerts and stats |
 | `USER` | everything above, plus favorites, reports and `/api/auth/me` |
 | `ADMIN` | everything above, plus every create/update/delete on routes, stops, transportations and alerts, and everything under `/api/admin` |
@@ -45,7 +48,7 @@ Nobody can register as an admin: admins are created by the demo-account setup or
 ## Favorites and reports (logged-in users)
 
 | Method | Path | What it does | Success |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/favorites` | My saved routes | 200 |
 | POST | `/api/favorites/{routeId}` | Save a route (409 if already saved) | 201 |
 | DELETE | `/api/favorites/{routeId}` | Remove a saved route | 204 |
@@ -57,7 +60,7 @@ The user is taken from the token, never from the URL, so nobody can read another
 ## Routes
 
 | Method | Path | What it does | Success |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/routes` | All routes. Optional filters: `?type=BUS` and `?status=ACTIVE` | 200 |
 | GET | `/api/routes/search?origin=Lipa&destination=Batangas` | Active direct routes, fastest first | 200 |
 | GET | `/api/routes/{id}` | One route with stops, map line, fare, schedules | 200 |
@@ -67,9 +70,12 @@ The user is taken from the token, never from the URL, so nobody can read another
 | PATCH | `/api/routes/{id}/status` | **ADMIN** change status: `{"status":"SUSPENDED"}` | 200 |
 | DELETE | `/api/routes/{id}` | **ADMIN** delete a route | 204 |
 
-Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
+Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`. `status` is the one an admin sets.
+`currentStatus` is the status right now: an `ACTIVE` route shows `INACTIVE` outside its
+operating hours (Philippine time). A route without a schedule keeps its `status`.
 
 ### Example response (`GET /api/routes/{id}`, shortened)
+
 ```json
 {
   "id": 1,
@@ -78,6 +84,7 @@ Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
   "origin": "Lipa City",
   "destination": "Batangas City",
   "status": "ACTIVE",
+  "currentStatus": "ACTIVE",
   "estimatedMinutes": 60,
   "distanceKm": 30.0,
   "demoData": true,
@@ -99,10 +106,12 @@ Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
   ]
 }
 ```
+
 `path` is the list of points the frontend turns into a Leaflet polyline.
 `estimatedFare` is calculated by the route's transportation type.
 
 ### Request body for POST / PUT `/api/routes`
+
 ```json
 {
   "routeCode": "LB-JEEP-02",
@@ -125,6 +134,7 @@ Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
   ]
 }
 ```
+
 - The **order of `stops`** is the order of the route.
 - `path` and `schedules` are optional. An empty `path` draws the line through the stops.
 - A route needs at least 2 different stops.
@@ -132,7 +142,7 @@ Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
 ## Stops
 
 | Method | Path | What it does | Success |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/stops` | All stops. Optional `?search=lipa` | 200 |
 | GET | `/api/stops/nearby?lat=13.94&lng=121.16&radiusKm=2` | Stops within the radius, nearest first (`radiusKm` default 2, max 50) | 200 |
 | GET | `/api/stops/{id}` | One stop | 200 |
@@ -146,7 +156,7 @@ Stop body: `{"name":"Lipa Public Market","description":"...","latitude":13.9411,
 ## Transportations
 
 | Method | Path | What it does | Success |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/transportations` | All services. Optional `?type=BUS` | 200 |
 | GET | `/api/transportations/{id}` | One service | 200 |
 | POST | `/api/transportations` | **ADMIN** create | 201 |
@@ -156,7 +166,7 @@ Stop body: `{"name":"Lipa Public Market","description":"...","latitude":13.9411,
 Types and their extra fields:
 
 | `type` | Extra field(s) |
-|---|---|
+| --- | --- |
 | `BUS` | `airConditioned` (true/false) |
 | `JEEPNEY` | `modernized` (true/false) |
 | `VAN` | `seatingCapacity` (required) |
@@ -166,7 +176,7 @@ Example: `{"type":"VAN","name":"Lipa Van Express","code":"VAN-LX","seatingCapaci
 ## Alerts
 
 | Method | Path | What it does | Success |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | GET | `/api/alerts` | Active alerts, newest first | 200 |
 | GET | `/api/alerts/{id}` | One alert | 200 |
 | POST | `/api/alerts` | **ADMIN** publish an alert | 201 |
@@ -179,7 +189,7 @@ Alert body: `{"title":"...","message":"...","severity":"INFO|WARNING|CRITICAL","
 ## Statistics and admin
 
 | Method | Path | What it does |
-|---|---|---|
+| --- | --- | --- |
 | GET | `/api/stats` | Home page numbers: active routes, stops, available vehicles, active alerts |
 | GET | `/api/admin/stats` | **ADMIN** dashboard numbers |
 | GET | `/api/admin/routes?search=&page=0&size=10` | **ADMIN** paged route table |
@@ -196,6 +206,7 @@ Paged responses look like `{"items":[...],"page":0,"size":10,"totalItems":8,"tot
 ## Errors
 
 Every error uses the same JSON format:
+
 ```json
 {
   "status": 404,
@@ -205,7 +216,9 @@ Every error uses the same JSON format:
   "errors": []
 }
 ```
+
 For validation problems (status 400) `errors` lists every invalid field:
+
 ```json
 {
   "status": 400,
@@ -218,10 +231,11 @@ For validation problems (status 400) `errors` lists every invalid field:
   ]
 }
 ```
+
 Nested fields use their full path, for example `fare.baseFare` or `stops[0].stopId`.
 
 | Code | When it happens |
-|---|---|
+| --- | --- |
 | 200 OK | It worked |
 | 201 Created | Something was created |
 | 204 No Content | Deleted |
@@ -235,6 +249,7 @@ Nested fields use their full path, for example `fare.baseFare` or `stops[0].stop
 | 500 Internal Server Error | Unexpected problem. The message is generic; details are only in the server log |
 
 ## Try it with curl (Git Bash)
+
 ```bash
 curl http://localhost:8080/api/health
 curl "http://localhost:8080/api/routes/search?origin=Lipa&destination=Batangas"

@@ -18,20 +18,25 @@ const transportTypes = [
 // These functions are defined outside the component so they keep the same identity
 // between renders (see useApiData).
 // There is no usage data yet, so "popular" is simply the first active routes by name.
-const loadPopularRoutes = () => getRoutes({ status: 'ACTIVE' }).then((routes) => routes.slice(0, 3))
+// All active routes are loaded, because the same list also counts the routes running now.
+const loadActiveRoutes = () => getRoutes({ status: 'ACTIVE' })
 const loadLatestAlerts = () => getActiveAlerts().then((alerts) => alerts.slice(0, 3))
 
 export default function Home() {
   const stats = useApiData(getPublicStats)
-  const popular = useApiData(loadPopularRoutes)
+  const popular = useApiData(loadActiveRoutes)
   const alerts = useApiData(loadLatestAlerts)
 
-  // one card per number; the value is null until the statistics have loaded
   const loaded = stats.state.status === 'success' ? stats.state.data : null
+  // routes inside their operating hours right now (currentStatus, from Phase 25)
+  const runningNow =
+    popular.state.status === 'success'
+      ? popular.state.data.filter((route) => route.currentStatus === 'ACTIVE').length
+      : null
   const statCards = [
-    { label: 'Active routes', value: loaded?.activeRoutes ?? null },
+    { label: 'Routes', value: loaded?.activeRoutes ?? null },
+    { label: 'Running now', value: runningNow },
     { label: 'Transportation stops', value: loaded?.stops ?? null },
-    { label: 'Available vehicles', value: loaded?.availableVehicles ?? null },
     { label: 'Active alerts', value: loaded?.activeAlerts ?? null },
   ]
 
@@ -81,7 +86,7 @@ export default function Home() {
           {popular.state.status === 'error' && <ErrorMessage message={popular.state.message} onRetry={popular.reload} />}
           {popular.state.status === 'success' && (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {popular.state.data.map((route) => (
+                {popular.state.data.slice(0, 3).map((route) => (
                 <RouteCard key={route.id} route={route} />
               ))}
             </div>

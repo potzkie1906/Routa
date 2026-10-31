@@ -42,7 +42,7 @@ describe('tripsFromStop', () => {
     expect(tripsFromStop(99, [route])).toEqual([])
   })
   it('lists active routes before inactive ones', () => {
-    const inactive = makeRoute({ id: 5, routeName: 'A Inactive Line', status: 'INACTIVE' })
+    const inactive = makeRoute({ id: 5, routeName: 'A Inactive Line', currentStatus: 'INACTIVE' })
     expect(tripsFromStop(1, [inactive, route]).map((t) => t.route.id)).toEqual([1, 5])
   })
 })

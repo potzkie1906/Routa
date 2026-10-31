@@ -12,7 +12,8 @@ interface StopMarkerProps {
 
 /**
  * A transportation stop or terminal on the map. Tap it to see the routes that leave from it.
- * A terminal is a glowing green pin with a bus symbol, and its name is always shown next to it.
+  * A terminal is a glowing green pin with a bus symbol. Its name shows next to it on hover, on a tap,
+ * or when the pin has keyboard focus.
  */
 export default function StopMarker({ stop, selected, onTap }: StopMarkerProps) {
   if (isTerminal(stop)) {
@@ -25,8 +26,8 @@ export default function StopMarker({ stop, selected, onTap }: StopMarkerProps) {
         // a Marker click never reaches the map below, so it is not ALSO a tap on the road
         eventHandlers={{ click: () => onTap(stop) }}
       >
-        {/* "permanent" = always visible, not only on hover */}
-        <Tooltip permanent direction="right" offset={[10, 0]} className="th-terminal-label">
+        {/* not "permanent": the name shows only on hover (or a tap), so labels never cover the map */}
+        <Tooltip direction="right" offset={[10, 0]} className="th-terminal-label">
           {stop.name}
         </Tooltip>
       </Marker>
