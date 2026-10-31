@@ -67,7 +67,9 @@ The user is taken from the token, never from the URL, so nobody can read another
 | PATCH | `/api/routes/{id}/status` | **ADMIN** change status: `{"status":"SUSPENDED"}` | 200 |
 | DELETE | `/api/routes/{id}` | **ADMIN** delete a route | 204 |
 
-Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
+Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`. `status` is the one an admin sets.
+`currentStatus` is the status right now: an `ACTIVE` route shows `INACTIVE` outside its
+operating hours (Philippine time). A route without a schedule keeps its `status`.
 
 ### Example response (`GET /api/routes/{id}`, shortened)
 ```json
@@ -78,6 +80,7 @@ Route statuses: `ACTIVE`, `INACTIVE`, `SUSPENDED`.
   "origin": "Lipa City",
   "destination": "Batangas City",
   "status": "ACTIVE",
+  "currentStatus": "ACTIVE",
   "estimatedMinutes": 60,
   "distanceKm": 30.0,
   "demoData": true,

@@ -1,7 +1,15 @@
 package com.transithub.entity;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.transithub.entity.enums.RouteStatus;
 import com.transithub.util.ValidationUtils;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -20,12 +28,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A transportation route, for example "Lipa - Batangas City".
@@ -254,5 +256,19 @@ public class Route {
             throw new IllegalStateException("Route " + routeCode + " has no fare rule");
         }
         return transportation.calculateFare(distanceKm, fare);
+    }
+
+     /**
+     * The status riders see at that moment, worked out from the operating hours.
+     * SUSPENDED and INACTIVE, set by an admin, always win. An ACTIVE route is only
+     * ACTIVE while one of its schedules is running, and INACTIVE outside those hours.
+     * A route without a schedule keeps the admin's status, because its hours are unknown.
+     */
+    public RouteStatus currentStatus(LocalDateTime now) {
+        if (status != RouteStatus.ACTIVE || schedules.isEmpty()) {
+            return status;
+        }
+        boolean operating = schedules.stream().anyMatch(schedule -> schedule.isOperatingAt(now));
+        return operating ? RouteStatus.ACTIVE : RouteStatus.INACTIVE;
     }
 }

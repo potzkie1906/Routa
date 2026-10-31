@@ -19,6 +19,7 @@ export function makeRoute(overrides: Partial<Route> = {}): Route {
     origin: 'Alpha',
     destination: 'Gamma',
     status: 'ACTIVE',
+    currentStatus: 'ACTIVE',
     estimatedMinutes: 25,
     distanceKm: 8.5,
     demoData: true,

@@ -22,7 +22,7 @@ export default function RouteSummary({ route }: { route: Route }) {
       <p className="text-base font-semibold">{route.routeName}</p>
       <div className="flex flex-wrap gap-2">
         <TypeBadge type={route.transportation.type} />
-        <StatusBadge status={route.status} />
+        <StatusBadge status={route.currentStatus} />
       </div>
 
       <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">

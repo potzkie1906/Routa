@@ -28,7 +28,7 @@ export default function RouteDetails({ route }: { route: Route }) {
       <header>
         <div className="flex flex-wrap items-center gap-2">
           <TypeBadge type={route.transportation.type} />
-          <StatusBadge status={route.status} />
+          <StatusBadge status={route.currentStatus} />
           {route.demoData && (
             <span className="rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-800">
               Demo data

@@ -89,7 +89,7 @@ export function tripsFromStop(stopId: number, routes: Route[]): StopTrip[] {
   }
   return trips.sort(
     (a, b) =>
-      Number(b.route.status === 'ACTIVE') - Number(a.route.status === 'ACTIVE') ||
+      Number(b.route.currentStatus === 'ACTIVE') - Number(a.route.currentStatus === 'ACTIVE') ||
       a.route.routeName.localeCompare(b.route.routeName),
   )
 }

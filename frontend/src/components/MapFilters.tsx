@@ -51,7 +51,7 @@ export default function MapFilters({ filters, onChange }: MapFiltersProps) {
             checked={filters.showInactive}
             onChange={() => onChange({ ...filters, showInactive: !filters.showInactive })}
           />
-          Inactive routes <span className="text-xs text-slate-500">(dashed lines)</span>
+            Inactive routes<span className="text-xs text-slate-500">(gray line, outside operating hours)</span>
         </label>
       </div>
     </fieldset>

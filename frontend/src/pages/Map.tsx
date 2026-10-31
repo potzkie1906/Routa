@@ -87,7 +87,7 @@ const [tapInfo, setTapInfo] = useState<TapInfo | null>(null)
     const text = query.trim().toLowerCase()
     return allRoutes.filter((route) => {
       const typeAllowed = filters.types[route.transportation.type]
-      const statusAllowed = route.status === 'ACTIVE' ? filters.showActive : filters.showInactive
+      const statusAllowed = route.currentStatus === 'ACTIVE' ? filters.showActive : filters.showInactive
       return typeAllowed && statusAllowed && routeMatchesQuery(route, text)
     })
   }, [allRoutes, filters, query])
